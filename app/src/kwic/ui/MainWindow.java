@@ -4,6 +4,10 @@
 
 package kwic.ui;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -12,10 +16,15 @@ import org.jdesktop.application.Task;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import kwic.index.IndexList;
+import kwic.index.InputReader;
+import kwic.index.ShiftedInput;
 
 /**
  * The application's main frame.
@@ -135,13 +144,14 @@ public class MainWindow extends FrameView {
         fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
 
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getActionMap(MainWindow.class, this);
+        jMenuItem1.setAction(actionMap.get("loadFile")); // NOI18N
         jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
         jMenuItem1.setToolTipText(resourceMap.getString("jMenuItem1.toolTipText")); // NOI18N
         jMenuItem1.setName("jMenuItem1"); // NOI18N
         fileMenu.add(jMenuItem1);
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getActionMap(MainWindow.class, this);
         jMenuItem2.setAction(actionMap.get("saveIndex")); // NOI18N
         jMenuItem2.setText(resourceMap.getString("jMenuItem2.text")); // NOI18N
         jMenuItem2.setToolTipText(resourceMap.getString("jMenuItem2.toolTipText")); // NOI18N
@@ -230,6 +240,58 @@ public class MainWindow extends FrameView {
             System.err.println("Save completed successfully.");
         }
     }
+
+    @Action
+    public Task loadFile() {
+        return new LoadFileTask(getApplication());
+    }
+
+    private class LoadFileTask extends org.jdesktop.application.Task<Object, Void> {
+        LoadFileTask(org.jdesktop.application.Application app) {
+            super(app);
+
+            //bring up the file dialog to select a file
+            JFileChooser fc = new JFileChooser();
+            int returnVal = fc.showOpenDialog(mainPanel);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                _file = fc.getSelectedFile();
+            } else {
+                _file = null;
+            }
+        }
+        @Override protected Object doInBackground() {
+            InputReader ir = null;
+            IndexList il = null;
+            try {
+                //read in one shiftedinput after the other
+                il = new IndexList();
+                ShiftedInput si = null;
+                ir = new InputReader(_file.toString());
+                while((si = ir.next()) != null) {
+                    System.err.println("Input: " + si.toString() + " => " + si.getIndex());
+                    il.add(si);
+                }
+                return null;
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    ir.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            return il;
+        }
+        @Override protected void succeeded(Object result) {
+            // Runs on the EDT.  Update the GUI based on
+            // the result computed by doInBackground().
+        }
+
+        private File _file;
+    }
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
