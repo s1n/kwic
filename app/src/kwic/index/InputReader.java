@@ -25,13 +25,13 @@ public class InputReader extends LineNumberReader {
         this(new FileReader(new File(file_)));
     }
 
-    public ShiftedInput next() {
-        ShiftedInput ret = null;
+    public IndexedString next() {
+        IndexedString ret = null;
         String line = "";
         try {
             line = this.readLine();
             if(line != null) {
-                ret = new ShiftedInput(line);
+                ret = new IndexedString(line);
             }
         } catch (IOException ex) {
             Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
