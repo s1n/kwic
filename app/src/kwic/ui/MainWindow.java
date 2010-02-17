@@ -22,9 +22,10 @@ import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import kwic.index.CircularShifter;
 import kwic.index.IndexList;
 import kwic.index.InputReader;
-import kwic.index.ShiftedInput;
+import kwic.index.IndexedString;
 
 /**
  * The application's main frame.
@@ -230,7 +231,7 @@ public class MainWindow extends FrameView {
         }
         @Override protected Object doInBackground() {
             System.err.println("Saving indexed data to a file...");
-            kwic.index.ShiftedInput si = new kwic.index.ShiftedInput("Hello World!");
+            kwic.index.IndexedString si = new kwic.index.IndexedString("Hello World!");
             System.err.println(si.toString() + " => " + si.getIndex());
             return null;  // return your result
         }
@@ -265,14 +266,17 @@ public class MainWindow extends FrameView {
             IndexList il = null;
             try {
                 //read in one shiftedinput after the other
-                il = new IndexList();
-                ShiftedInput si = null;
+                il = new IndexList(new CircularShifter());
+                IndexedString si = null;
                 ir = new InputReader(_file.toString());
                 while((si = ir.next()) != null) {
-                    System.err.println("Input: " + si.toString() + " => " + si.getIndex());
                     il.add(si);
                 }
-                return null;
+
+                for(IndexedString sin : il) {
+                    System.err.println("Input: " + sin.toString() + " => " + sin.getIndex() + " from " + sin.originIndex());
+                }
+                return il;
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
