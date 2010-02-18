@@ -17,11 +17,14 @@ import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.ListModel;
 import kwic.index.CircularShifter;
 import kwic.index.IndexList;
 import kwic.index.InputReader;
@@ -36,6 +39,8 @@ public class MainWindow extends FrameView {
         super(app);
 
         initComponents();
+        this._inputRecordList.setModel(this._inputModel);
+        this._indexRecordList.setModel(this._indexModel);
 
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
@@ -112,6 +117,11 @@ public class MainWindow extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        _inputRecordList = new javax.swing.JList();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        _indexRecordList = new javax.swing.JList();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -125,18 +135,51 @@ public class MainWindow extends FrameView {
         statusMessageLabel = new javax.swing.JLabel();
         statusAnimationLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jPopupMenu2 = new javax.swing.JPopupMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
+        mainPanel.setMinimumSize(new java.awt.Dimension(100, 110));
         mainPanel.setName("mainPanel"); // NOI18N
+        mainPanel.setPreferredSize(new java.awt.Dimension(939, 500));
+
+        jSplitPane1.setDividerLocation(225);
+        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        jSplitPane1.setName("jSplitPane1"); // NOI18N
+
+        jScrollPane4.setName("jScrollPane4"); // NOI18N
+
+        _inputRecordList.setComponentPopupMenu(jPopupMenu2);
+        _inputRecordList.setName("_inputRecordList"); // NOI18N
+        jScrollPane4.setViewportView(_inputRecordList);
+
+        jSplitPane1.setLeftComponent(jScrollPane4);
+
+        jScrollPane3.setComponentPopupMenu(jPopupMenu1);
+        jScrollPane3.setName("jScrollPane3"); // NOI18N
+
+        _indexRecordList.setComponentPopupMenu(jPopupMenu1);
+        _indexRecordList.setName("_indexRecordList"); // NOI18N
+        jScrollPane3.setViewportView(_indexRecordList);
+
+        jSplitPane1.setRightComponent(jScrollPane3);
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 691, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
+                .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 450, Short.MAX_VALUE)
+            .addGroup(mainPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         menuBar.setName("menuBar"); // NOI18N
@@ -147,7 +190,6 @@ public class MainWindow extends FrameView {
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getActionMap(MainWindow.class, this);
         jMenuItem1.setAction(actionMap.get("loadFile")); // NOI18N
-        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
         jMenuItem1.setToolTipText(resourceMap.getString("jMenuItem1.toolTipText")); // NOI18N
         jMenuItem1.setName("jMenuItem1"); // NOI18N
@@ -192,11 +234,11 @@ public class MainWindow extends FrameView {
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 691, Short.MAX_VALUE)
+            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 939, Short.MAX_VALUE)
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 507, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 755, Short.MAX_VALUE)
                 .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
@@ -213,6 +255,20 @@ public class MainWindow extends FrameView {
                     .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(3, 3, 3))
         );
+
+        jPopupMenu1.setName("jPopupMenu1"); // NOI18N
+
+        jMenuItem3.setText(resourceMap.getString("jMenuItem3.text")); // NOI18N
+        jMenuItem3.setToolTipText(resourceMap.getString("jMenuItem3.toolTipText")); // NOI18N
+        jMenuItem3.setName("jMenuItem3"); // NOI18N
+        jPopupMenu1.add(jMenuItem3);
+
+        jPopupMenu2.setName("jPopupMenu2"); // NOI18N
+
+        jMenuItem4.setText(resourceMap.getString("jMenuItem4.text")); // NOI18N
+        jMenuItem4.setToolTipText(resourceMap.getString("jMenuItem4.toolTipText")); // NOI18N
+        jMenuItem4.setName("jMenuItem4"); // NOI18N
+        jPopupMenu2.add(jMenuItem4);
 
         setComponent(mainPanel);
         setMenuBar(menuBar);
@@ -271,10 +327,11 @@ public class MainWindow extends FrameView {
                 ir = new InputReader(_file.toString());
                 while((si = ir.next()) != null) {
                     il.add(si);
+                    ((DefaultListModel)MainWindow.this._inputRecordList.getModel()).addElement(si);
                 }
 
                 for(IndexedString sin : il) {
-                    System.err.println("Input: " + sin.toString() + " => " + sin.getIndex() + " from " + sin.originIndex());
+                    ((DefaultListModel)MainWindow.this._indexRecordList.getModel()).addElement(sin.getIndex() + " | " + sin.toString());
                 }
                 return il;
             } catch (FileNotFoundException ex) {
@@ -296,12 +353,71 @@ public class MainWindow extends FrameView {
         private File _file;
     }
 
+    @Action
+    public Task removeDataAndIndex() {
+        return new RemoveDataAndIndexTask(getApplication());
+    }
+
+    private class RemoveDataAndIndexTask extends org.jdesktop.application.Task<Object, Void> {
+        RemoveDataAndIndexTask(org.jdesktop.application.Application app) {
+            // Runs on the EDT.  Copy GUI state that
+            // doInBackground() depends on from parameters
+            // to RemoveDataAndIndexTask fields, here.
+            super(app);
+        }
+        @Override protected Object doInBackground() {
+            // Your Task's code here.  This method runs
+            // on a background thread, so don't reference
+            // the Swing GUI from here.
+            return null;  // return your result
+        }
+        @Override protected void succeeded(Object result) {
+            // Runs on the EDT.  Update the GUI based on
+            // the result computed by doInBackground().
+        }
+    }
+
+    @Action
+    public Task removeIndex() {
+        return new RemoveIndexTask(getApplication());
+    }
+
+    private class RemoveIndexTask extends org.jdesktop.application.Task<Object, Void> {
+        RemoveIndexTask(org.jdesktop.application.Application app) {
+            // Runs on the EDT.  Copy GUI state that
+            // doInBackground() depends on from parameters
+            // to RemoveIndexTask fields, here.
+            super(app);
+        }
+        @Override protected Object doInBackground() {
+            // Your Task's code here.  This method runs
+            // on a background thread, so don't reference
+            // the Swing GUI from here.
+            return null;  // return your result
+        }
+        @Override protected void succeeded(Object result) {
+            // Runs on the EDT.  Update the GUI based on
+            // the result computed by doInBackground().
+        }
+    }
+
+
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList _indexRecordList;
+    private javax.swing.JList _inputRecordList;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JPopupMenu jPopupMenu2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JProgressBar progressBar;
@@ -315,6 +431,8 @@ public class MainWindow extends FrameView {
     private final Icon idleIcon;
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
-
     private JDialog aboutBox;
+
+    private ListModel _inputModel = new DefaultListModel();
+    private ListModel _indexModel = new DefaultListModel();
 }
