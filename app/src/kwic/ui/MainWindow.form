@@ -2,12 +2,12 @@
 
 <Form version="1.5" maxVersion="1.7">
   <NonVisualComponents>
-    <Container class="javax.swing.JPanel" name="mainPanel">
+    <Container class="javax.swing.JPanel" name="_mainPanel">
       <Properties>
         <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[100, 110]"/>
         </Property>
-        <Property name="name" type="java.lang.String" value="mainPanel" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="_mainPanel" noResource="true"/>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[939, 500]"/>
         </Property>
@@ -18,7 +18,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jSplitPane1" pref="915" max="32767" attributes="0"/>
+                  <Component id="_kwicSplitPane" pref="915" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -27,25 +27,25 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jSplitPane1" pref="487" max="32767" attributes="0"/>
+                  <Component id="_kwicSplitPane" pref="487" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="javax.swing.JSplitPane" name="jSplitPane1">
+        <Container class="javax.swing.JSplitPane" name="_kwicSplitPane">
           <Properties>
             <Property name="dividerLocation" type="int" value="225"/>
             <Property name="orientation" type="int" value="0"/>
-            <Property name="name" type="java.lang.String" value="jSplitPane1" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="_kwicSplitPane" noResource="true"/>
           </Properties>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JSplitPaneSupportLayout"/>
           <SubComponents>
-            <Container class="javax.swing.JScrollPane" name="jScrollPane4">
+            <Container class="javax.swing.JScrollPane" name="_inputScrollPane">
               <Properties>
-                <Property name="name" type="java.lang.String" value="jScrollPane4" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="_inputScrollPane" noResource="true"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -64,19 +64,19 @@
                       <StringArray count="0"/>
                     </Property>
                     <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                      <ComponentRef name="jPopupMenu2"/>
+                      <ComponentRef name="_indexPopupMenu"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="_inputRecordList" noResource="true"/>
                   </Properties>
                 </Component>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+            <Container class="javax.swing.JScrollPane" name="_indexScrollPane">
               <Properties>
                 <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="jPopupMenu1"/>
+                  <ComponentRef name="_inputPopupMenu"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="jScrollPane3" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="_indexScrollPane" noResource="true"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -95,7 +95,7 @@
                       <StringArray count="0"/>
                     </Property>
                     <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                      <ComponentRef name="jPopupMenu1"/>
+                      <ComponentRef name="_inputPopupMenu"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="_indexRecordList" noResource="true"/>
                   </Properties>
@@ -106,43 +106,43 @@
         </Container>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JMenuBar" name="menuBar">
+    <Container class="javax.swing.JMenuBar" name="_menu">
       <Properties>
-        <Property name="name" type="java.lang.String" value="menuBar" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="_menu" noResource="true"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="fileMenu">
+        <Menu class="javax.swing.JMenu" name="_fileMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="fileMenu.text"/>
-            <Property name="name" type="java.lang.String" value="fileMenu" noResource="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="_fileMenu.text"/>
+            <Property name="name" type="java.lang.String" value="_fileMenu" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
           </AuxValues>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="_loadMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="kwic.ui.MainWindow" id="loadFile" methodName="loadFile"/>
                 </Property>
-                <Property name="text" type="java.lang.String" resourceKey="jMenuItem1.text"/>
-                <Property name="toolTipText" type="java.lang.String" resourceKey="jMenuItem1.toolTipText"/>
-                <Property name="name" type="java.lang.String" value="jMenuItem1" noResource="true"/>
+                <Property name="text" type="java.lang.String" resourceKey="_loadMenuItem.text"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="_loadMenuItem.toolTipText"/>
+                <Property name="name" type="java.lang.String" value="_loadMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="_saveMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="kwic.ui.uiView" id="saveIndex" methodName="saveIndex"/>
                 </Property>
-                <Property name="text" type="java.lang.String" resourceKey="jMenuItem2.text"/>
-                <Property name="toolTipText" type="java.lang.String" resourceKey="jMenuItem2.toolTipText"/>
-                <Property name="name" type="java.lang.String" value="jMenuItem2" noResource="true"/>
+                <Property name="text" type="java.lang.String" resourceKey="_saveMenuItem.text"/>
+                <Property name="toolTipText" type="java.lang.String" resourceKey="_saveMenuItem.toolTipText"/>
+                <Property name="name" type="java.lang.String" value="_saveMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
@@ -150,12 +150,12 @@
                 <Property name="name" type="java.lang.String" value="jSeparator1" noResource="true"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="_exitMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="org.jdesktop.application.Application" id="quit" methodName="quit"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="exitMenuItem" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="_exitMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
@@ -164,22 +164,22 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="helpMenu">
+        <Menu class="javax.swing.JMenu" name="_helpMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="helpMenu.text"/>
-            <Property name="name" type="java.lang.String" value="helpMenu" noResource="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="_helpMenu.text"/>
+            <Property name="name" type="java.lang.String" value="_helpMenu" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
           </AuxValues>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="_aboutMenuItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="kwic.ui.uiView" id="showAboutBox" methodName="showAboutBox"/>
                 </Property>
-                <Property name="name" type="java.lang.String" value="aboutMenuItem" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="_aboutMenuItem" noResource="true"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
@@ -190,9 +190,9 @@
         </Menu>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="statusPanel">
+    <Container class="javax.swing.JPanel" name="_statusPanel">
       <Properties>
-        <Property name="name" type="java.lang.String" value="statusPanel" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="_statusPanel" noResource="true"/>
       </Properties>
 
       <Layout>
@@ -201,11 +201,11 @@
               <Component id="statusPanelSeparator" alignment="0" pref="939" max="32767" attributes="0"/>
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="statusMessageLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="_statusMessageLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace pref="755" max="32767" attributes="0"/>
-                  <Component id="progressBar" min="-2" max="-2" attributes="0"/>
+                  <Component id="_progressBar" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="statusAnimationLabel" min="-2" max="-2" attributes="0"/>
+                  <Component id="_statusAnimationLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -216,9 +216,9 @@
                   <Component id="statusPanelSeparator" min="-2" pref="2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="statusMessageLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="statusAnimationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="progressBar" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="_statusMessageLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="_statusAnimationLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="_progressBar" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
               </Group>
@@ -235,28 +235,28 @@
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="statusMessageLabel">
+        <Component class="javax.swing.JLabel" name="_statusMessageLabel">
           <Properties>
-            <Property name="name" type="java.lang.String" value="statusMessageLabel" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="_statusMessageLabel" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="statusAnimationLabel">
+        <Component class="javax.swing.JLabel" name="_statusAnimationLabel">
           <Properties>
             <Property name="horizontalAlignment" type="int" value="2"/>
-            <Property name="name" type="java.lang.String" value="statusAnimationLabel" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="_statusAnimationLabel" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
             <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JProgressBar" name="progressBar">
+        <Component class="javax.swing.JProgressBar" name="_progressBar">
           <Properties>
-            <Property name="name" type="java.lang.String" value="progressBar" noResource="true"/>
+            <Property name="name" type="java.lang.String" value="_progressBar" noResource="true"/>
           </Properties>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
@@ -265,38 +265,38 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPopupMenu" name="jPopupMenu1">
+    <Container class="javax.swing.JPopupMenu" name="_inputPopupMenu">
       <Properties>
-        <Property name="name" type="java.lang.String" value="jPopupMenu1" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="_inputPopupMenu" noResource="true"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+        <MenuItem class="javax.swing.JMenuItem" name="_inputRemovePopup">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jMenuItem3.text"/>
-            <Property name="toolTipText" type="java.lang.String" resourceKey="jMenuItem3.toolTipText"/>
-            <Property name="name" type="java.lang.String" value="jMenuItem3" noResource="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="_inputRemovePopup.text"/>
+            <Property name="toolTipText" type="java.lang.String" resourceKey="_inputRemovePopup.toolTipText"/>
+            <Property name="name" type="java.lang.String" value="_inputRemovePopup" noResource="true"/>
           </Properties>
         </MenuItem>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPopupMenu" name="jPopupMenu2">
+    <Container class="javax.swing.JPopupMenu" name="_indexPopupMenu">
       <Properties>
-        <Property name="name" type="java.lang.String" value="jPopupMenu2" noResource="true"/>
+        <Property name="name" type="java.lang.String" value="_indexPopupMenu" noResource="true"/>
       </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
       <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+        <MenuItem class="javax.swing.JMenuItem" name="_indexRemovePopup">
           <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jMenuItem4.text"/>
-            <Property name="toolTipText" type="java.lang.String" resourceKey="jMenuItem4.toolTipText"/>
-            <Property name="name" type="java.lang.String" value="jMenuItem4" noResource="true"/>
+            <Property name="text" type="java.lang.String" resourceKey="_indexRemovePopup.text"/>
+            <Property name="toolTipText" type="java.lang.String" resourceKey="_indexRemovePopup.toolTipText"/>
+            <Property name="name" type="java.lang.String" value="_indexRemovePopup" noResource="true"/>
           </Properties>
         </MenuItem>
       </SubComponents>
@@ -304,13 +304,13 @@
   </NonVisualComponents>
   <Properties>
     <Property name="component" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
-      <ComponentRef name="mainPanel"/>
+      <ComponentRef name="_mainPanel"/>
     </Property>
     <Property name="menuBar" type="javax.swing.JMenuBar" editor="org.netbeans.modules.form.ComponentChooserEditor">
-      <ComponentRef name="menuBar"/>
+      <ComponentRef name="_menu"/>
     </Property>
     <Property name="statusBar" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
-      <ComponentRef name="statusPanel"/>
+      <ComponentRef name="_statusPanel"/>
     </Property>
   </Properties>
   <AuxValues>

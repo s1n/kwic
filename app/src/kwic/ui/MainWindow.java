@@ -47,7 +47,7 @@ public class MainWindow extends FrameView {
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
         messageTimer = new Timer(messageTimeout, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                statusMessageLabel.setText("");
+                _statusMessageLabel.setText("");
             }
         });
         messageTimer.setRepeats(false);
@@ -58,12 +58,12 @@ public class MainWindow extends FrameView {
         busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
-                statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
+                _statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
             }
         });
         idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
-        statusAnimationLabel.setIcon(idleIcon);
-        progressBar.setVisible(false);
+        _statusAnimationLabel.setIcon(idleIcon);
+        _progressBar.setVisible(false);
 
         // connecting action tasks to status bar via TaskMonitor
         TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
@@ -72,26 +72,26 @@ public class MainWindow extends FrameView {
                 String propertyName = evt.getPropertyName();
                 if ("started".equals(propertyName)) {
                     if (!busyIconTimer.isRunning()) {
-                        statusAnimationLabel.setIcon(busyIcons[0]);
+                        _statusAnimationLabel.setIcon(busyIcons[0]);
                         busyIconIndex = 0;
                         busyIconTimer.start();
                     }
-                    progressBar.setVisible(true);
-                    progressBar.setIndeterminate(true);
+                    _progressBar.setVisible(true);
+                    _progressBar.setIndeterminate(true);
                 } else if ("done".equals(propertyName)) {
                     busyIconTimer.stop();
-                    statusAnimationLabel.setIcon(idleIcon);
-                    progressBar.setVisible(false);
-                    progressBar.setValue(0);
+                    _statusAnimationLabel.setIcon(idleIcon);
+                    _progressBar.setVisible(false);
+                    _progressBar.setValue(0);
                 } else if ("message".equals(propertyName)) {
                     String text = (String)(evt.getNewValue());
-                    statusMessageLabel.setText((text == null) ? "" : text);
+                    _statusMessageLabel.setText((text == null) ? "" : text);
                     messageTimer.restart();
                 } else if ("progress".equals(propertyName)) {
                     int value = (Integer)(evt.getNewValue());
-                    progressBar.setVisible(true);
-                    progressBar.setIndeterminate(false);
-                    progressBar.setValue(value);
+                    _progressBar.setVisible(true);
+                    _progressBar.setIndeterminate(false);
+                    _progressBar.setValue(value);
                 }
             }
         });
@@ -116,163 +116,163 @@ public class MainWindow extends FrameView {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        mainPanel = new javax.swing.JPanel();
-        jSplitPane1 = new javax.swing.JSplitPane();
-        jScrollPane4 = new javax.swing.JScrollPane();
+        _mainPanel = new javax.swing.JPanel();
+        _kwicSplitPane = new javax.swing.JSplitPane();
+        _inputScrollPane = new javax.swing.JScrollPane();
         _inputRecordList = new javax.swing.JList();
-        jScrollPane3 = new javax.swing.JScrollPane();
+        _indexScrollPane = new javax.swing.JScrollPane();
         _indexRecordList = new javax.swing.JList();
-        menuBar = new javax.swing.JMenuBar();
-        javax.swing.JMenu fileMenu = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        _menu = new javax.swing.JMenuBar();
+        javax.swing.JMenu _fileMenu = new javax.swing.JMenu();
+        _loadMenuItem = new javax.swing.JMenuItem();
+        _saveMenuItem = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
-        javax.swing.JMenu helpMenu = new javax.swing.JMenu();
-        javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
-        statusPanel = new javax.swing.JPanel();
+        javax.swing.JMenuItem _exitMenuItem = new javax.swing.JMenuItem();
+        javax.swing.JMenu _helpMenu = new javax.swing.JMenu();
+        javax.swing.JMenuItem _aboutMenuItem = new javax.swing.JMenuItem();
+        _statusPanel = new javax.swing.JPanel();
         javax.swing.JSeparator statusPanelSeparator = new javax.swing.JSeparator();
-        statusMessageLabel = new javax.swing.JLabel();
-        statusAnimationLabel = new javax.swing.JLabel();
-        progressBar = new javax.swing.JProgressBar();
-        jPopupMenu1 = new javax.swing.JPopupMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jPopupMenu2 = new javax.swing.JPopupMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        _statusMessageLabel = new javax.swing.JLabel();
+        _statusAnimationLabel = new javax.swing.JLabel();
+        _progressBar = new javax.swing.JProgressBar();
+        _inputPopupMenu = new javax.swing.JPopupMenu();
+        _inputRemovePopup = new javax.swing.JMenuItem();
+        _indexPopupMenu = new javax.swing.JPopupMenu();
+        _indexRemovePopup = new javax.swing.JMenuItem();
 
-        mainPanel.setMinimumSize(new java.awt.Dimension(100, 110));
-        mainPanel.setName("mainPanel"); // NOI18N
-        mainPanel.setPreferredSize(new java.awt.Dimension(939, 500));
+        _mainPanel.setMinimumSize(new java.awt.Dimension(100, 110));
+        _mainPanel.setName("_mainPanel"); // NOI18N
+        _mainPanel.setPreferredSize(new java.awt.Dimension(939, 500));
 
-        jSplitPane1.setDividerLocation(225);
-        jSplitPane1.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        jSplitPane1.setName("jSplitPane1"); // NOI18N
+        _kwicSplitPane.setDividerLocation(225);
+        _kwicSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        _kwicSplitPane.setName("_kwicSplitPane"); // NOI18N
 
-        jScrollPane4.setName("jScrollPane4"); // NOI18N
+        _inputScrollPane.setName("_inputScrollPane"); // NOI18N
 
-        _inputRecordList.setComponentPopupMenu(jPopupMenu2);
+        _inputRecordList.setComponentPopupMenu(_indexPopupMenu);
         _inputRecordList.setName("_inputRecordList"); // NOI18N
-        jScrollPane4.setViewportView(_inputRecordList);
+        _inputScrollPane.setViewportView(_inputRecordList);
 
-        jSplitPane1.setLeftComponent(jScrollPane4);
+        _kwicSplitPane.setLeftComponent(_inputScrollPane);
 
-        jScrollPane3.setComponentPopupMenu(jPopupMenu1);
-        jScrollPane3.setName("jScrollPane3"); // NOI18N
+        _indexScrollPane.setComponentPopupMenu(_inputPopupMenu);
+        _indexScrollPane.setName("_indexScrollPane"); // NOI18N
 
-        _indexRecordList.setComponentPopupMenu(jPopupMenu1);
+        _indexRecordList.setComponentPopupMenu(_inputPopupMenu);
         _indexRecordList.setName("_indexRecordList"); // NOI18N
-        jScrollPane3.setViewportView(_indexRecordList);
+        _indexScrollPane.setViewportView(_indexRecordList);
 
-        jSplitPane1.setRightComponent(jScrollPane3);
+        _kwicSplitPane.setRightComponent(_indexScrollPane);
 
-        javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
-        mainPanel.setLayout(mainPanelLayout);
-        mainPanelLayout.setHorizontalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+        javax.swing.GroupLayout _mainPanelLayout = new javax.swing.GroupLayout(_mainPanel);
+        _mainPanel.setLayout(_mainPanelLayout);
+        _mainPanelLayout.setHorizontalGroup(
+            _mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, _mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
+                .addComponent(_kwicSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        mainPanelLayout.setVerticalGroup(
-            mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
+        _mainPanelLayout.setVerticalGroup(
+            _mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(_mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+                .addComponent(_kwicSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        menuBar.setName("menuBar"); // NOI18N
+        _menu.setName("_menu"); // NOI18N
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getResourceMap(MainWindow.class);
-        fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
-        fileMenu.setName("fileMenu"); // NOI18N
+        _fileMenu.setText(resourceMap.getString("_fileMenu.text")); // NOI18N
+        _fileMenu.setName("_fileMenu"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getActionMap(MainWindow.class, this);
-        jMenuItem1.setAction(actionMap.get("loadFile")); // NOI18N
-        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
-        jMenuItem1.setToolTipText(resourceMap.getString("jMenuItem1.toolTipText")); // NOI18N
-        jMenuItem1.setName("jMenuItem1"); // NOI18N
-        fileMenu.add(jMenuItem1);
+        _loadMenuItem.setAction(actionMap.get("loadFile")); // NOI18N
+        _loadMenuItem.setText(resourceMap.getString("_loadMenuItem.text")); // NOI18N
+        _loadMenuItem.setToolTipText(resourceMap.getString("_loadMenuItem.toolTipText")); // NOI18N
+        _loadMenuItem.setName("_loadMenuItem"); // NOI18N
+        _fileMenu.add(_loadMenuItem);
 
-        jMenuItem2.setAction(actionMap.get("saveIndex")); // NOI18N
-        jMenuItem2.setText(resourceMap.getString("jMenuItem2.text")); // NOI18N
-        jMenuItem2.setToolTipText(resourceMap.getString("jMenuItem2.toolTipText")); // NOI18N
-        jMenuItem2.setName("jMenuItem2"); // NOI18N
-        fileMenu.add(jMenuItem2);
+        _saveMenuItem.setAction(actionMap.get("saveIndex")); // NOI18N
+        _saveMenuItem.setText(resourceMap.getString("_saveMenuItem.text")); // NOI18N
+        _saveMenuItem.setToolTipText(resourceMap.getString("_saveMenuItem.toolTipText")); // NOI18N
+        _saveMenuItem.setName("_saveMenuItem"); // NOI18N
+        _fileMenu.add(_saveMenuItem);
 
         jSeparator1.setName("jSeparator1"); // NOI18N
-        fileMenu.add(jSeparator1);
+        _fileMenu.add(jSeparator1);
 
-        exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
-        exitMenuItem.setName("exitMenuItem"); // NOI18N
-        fileMenu.add(exitMenuItem);
+        _exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
+        _exitMenuItem.setName("_exitMenuItem"); // NOI18N
+        _fileMenu.add(_exitMenuItem);
 
-        menuBar.add(fileMenu);
+        _menu.add(_fileMenu);
 
-        helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
-        helpMenu.setName("helpMenu"); // NOI18N
+        _helpMenu.setText(resourceMap.getString("_helpMenu.text")); // NOI18N
+        _helpMenu.setName("_helpMenu"); // NOI18N
 
-        aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
-        aboutMenuItem.setName("aboutMenuItem"); // NOI18N
-        helpMenu.add(aboutMenuItem);
+        _aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        _aboutMenuItem.setName("_aboutMenuItem"); // NOI18N
+        _helpMenu.add(_aboutMenuItem);
 
-        menuBar.add(helpMenu);
+        _menu.add(_helpMenu);
 
-        statusPanel.setName("statusPanel"); // NOI18N
+        _statusPanel.setName("_statusPanel"); // NOI18N
 
         statusPanelSeparator.setName("statusPanelSeparator"); // NOI18N
 
-        statusMessageLabel.setName("statusMessageLabel"); // NOI18N
+        _statusMessageLabel.setName("_statusMessageLabel"); // NOI18N
 
-        statusAnimationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        statusAnimationLabel.setName("statusAnimationLabel"); // NOI18N
+        _statusAnimationLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        _statusAnimationLabel.setName("_statusAnimationLabel"); // NOI18N
 
-        progressBar.setName("progressBar"); // NOI18N
+        _progressBar.setName("_progressBar"); // NOI18N
 
-        javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
-        statusPanel.setLayout(statusPanelLayout);
-        statusPanelLayout.setHorizontalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout _statusPanelLayout = new javax.swing.GroupLayout(_statusPanel);
+        _statusPanel.setLayout(_statusPanelLayout);
+        _statusPanelLayout.setHorizontalGroup(
+            _statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 939, Short.MAX_VALUE)
-            .addGroup(statusPanelLayout.createSequentialGroup()
+            .addGroup(_statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(statusMessageLabel)
+                .addComponent(_statusMessageLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 755, Short.MAX_VALUE)
-                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(_progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(statusAnimationLabel)
+                .addComponent(_statusAnimationLabel)
                 .addContainerGap())
         );
-        statusPanelLayout.setVerticalGroup(
-            statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(statusPanelLayout.createSequentialGroup()
+        _statusPanelLayout.setVerticalGroup(
+            _statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(_statusPanelLayout.createSequentialGroup()
                 .addComponent(statusPanelSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(statusMessageLabel)
-                    .addComponent(statusAnimationLabel)
-                    .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(_statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(_statusMessageLabel)
+                    .addComponent(_statusAnimationLabel)
+                    .addComponent(_progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(3, 3, 3))
         );
 
-        jPopupMenu1.setName("jPopupMenu1"); // NOI18N
+        _inputPopupMenu.setName("_inputPopupMenu"); // NOI18N
 
-        jMenuItem3.setText(resourceMap.getString("jMenuItem3.text")); // NOI18N
-        jMenuItem3.setToolTipText(resourceMap.getString("jMenuItem3.toolTipText")); // NOI18N
-        jMenuItem3.setName("jMenuItem3"); // NOI18N
-        jPopupMenu1.add(jMenuItem3);
+        _inputRemovePopup.setText(resourceMap.getString("_inputRemovePopup.text")); // NOI18N
+        _inputRemovePopup.setToolTipText(resourceMap.getString("_inputRemovePopup.toolTipText")); // NOI18N
+        _inputRemovePopup.setName("_inputRemovePopup"); // NOI18N
+        _inputPopupMenu.add(_inputRemovePopup);
 
-        jPopupMenu2.setName("jPopupMenu2"); // NOI18N
+        _indexPopupMenu.setName("_indexPopupMenu"); // NOI18N
 
-        jMenuItem4.setText(resourceMap.getString("jMenuItem4.text")); // NOI18N
-        jMenuItem4.setToolTipText(resourceMap.getString("jMenuItem4.toolTipText")); // NOI18N
-        jMenuItem4.setName("jMenuItem4"); // NOI18N
-        jPopupMenu2.add(jMenuItem4);
+        _indexRemovePopup.setText(resourceMap.getString("_indexRemovePopup.text")); // NOI18N
+        _indexRemovePopup.setToolTipText(resourceMap.getString("_indexRemovePopup.toolTipText")); // NOI18N
+        _indexRemovePopup.setName("_indexRemovePopup"); // NOI18N
+        _indexPopupMenu.add(_indexRemovePopup);
 
-        setComponent(mainPanel);
-        setMenuBar(menuBar);
-        setStatusBar(statusPanel);
+        setComponent(_mainPanel);
+        setMenuBar(_menu);
+        setStatusBar(_statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
     @Action
@@ -309,7 +309,7 @@ public class MainWindow extends FrameView {
 
             //bring up the file dialog to select a file
             JFileChooser fc = new JFileChooser();
-            int returnVal = fc.showOpenDialog(mainPanel);
+            int returnVal = fc.showOpenDialog(_mainPanel);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 _file = fc.getSelectedFile();
@@ -406,24 +406,24 @@ public class MainWindow extends FrameView {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPopupMenu _indexPopupMenu;
     private javax.swing.JList _indexRecordList;
+    private javax.swing.JMenuItem _indexRemovePopup;
+    private javax.swing.JScrollPane _indexScrollPane;
+    private javax.swing.JPopupMenu _inputPopupMenu;
     private javax.swing.JList _inputRecordList;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JPopupMenu jPopupMenu1;
-    private javax.swing.JPopupMenu jPopupMenu2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JMenuItem _inputRemovePopup;
+    private javax.swing.JScrollPane _inputScrollPane;
+    private javax.swing.JSplitPane _kwicSplitPane;
+    private javax.swing.JMenuItem _loadMenuItem;
+    private javax.swing.JPanel _mainPanel;
+    private javax.swing.JMenuBar _menu;
+    private javax.swing.JProgressBar _progressBar;
+    private javax.swing.JMenuItem _saveMenuItem;
+    private javax.swing.JLabel _statusAnimationLabel;
+    private javax.swing.JLabel _statusMessageLabel;
+    private javax.swing.JPanel _statusPanel;
     private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JPanel mainPanel;
-    private javax.swing.JMenuBar menuBar;
-    private javax.swing.JProgressBar progressBar;
-    private javax.swing.JLabel statusAnimationLabel;
-    private javax.swing.JLabel statusMessageLabel;
-    private javax.swing.JPanel statusPanel;
     // End of variables declaration//GEN-END:variables
 
     private final Timer messageTimer;
