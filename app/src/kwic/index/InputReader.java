@@ -8,34 +8,40 @@ import java.io.LineNumberReader;
 import java.io.Reader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Responsible for reading the input from the File.
  */
 public class InputReader extends LineNumberReader {
-    public InputReader(Reader in) {
-        super(in);
-    }
-    
-    public InputReader(Reader in, int size) {
-        super(in, size);
-    }
 
-    public InputReader(String file_) throws FileNotFoundException {
-        this(new FileReader(new File(file_)));
-    }
+   public InputReader(Reader in) {
+      super(in);
+   }
 
-    public IndexedString next() {
-        IndexedString ret = null;
-        String line = "";
-        try {
-            line = this.readLine();
-            if(line != null) {
-                ret = new IndexedString(line);
+   public InputReader(Reader in, int size) {
+      super(in, size);
+   }
+
+   public InputReader(String file_) throws FileNotFoundException {
+      this(new FileReader(new File(file_)));
+   }
+
+   public IndexedString next() throws java.util.regex.PatternSyntaxException {
+      IndexedString ret = null;
+      String line = "";
+      try {
+         line = this.readLine();
+         if (line != null) {
+            ret = new IndexedString(line);
+            if (!ret.valid()) {
+               throw new PatternSyntaxException("Invalid format line: " + line, "alphanum", this.getLineNumber());
             }
-        } catch (IOException ex) {
-            Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return ret;
-    }
+         }
+      } catch (IOException ex) {
+         Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
+         ex.printStackTrace();
+      }
+      return ret;
+   }
 }
