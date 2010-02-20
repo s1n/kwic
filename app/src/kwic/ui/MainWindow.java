@@ -1,7 +1,6 @@
 /*
  * uiView.java
  */
-
 package kwic.ui;
 
 import java.io.FileNotFoundException;
@@ -17,7 +16,7 @@ import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import javax.swing.AbstractListModel;
+import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.Timer;
 import javax.swing.Icon;
@@ -35,84 +34,87 @@ import kwic.index.IndexedString;
  */
 public class MainWindow extends FrameView {
 
-    public MainWindow(SingleFrameApplication app) {
-        super(app);
+   public MainWindow(SingleFrameApplication app) {
+      super(app);
 
-        initComponents();
-        this._inputRecordList.setModel(this._inputModel);
-        this._indexRecordList.setModel(this._indexModel);
+      initComponents();
+      this._inputRecordList.setModel(this._inputModel);
+      this._indexRecordList.setModel(this._indexModel);
 
-        // status bar initialization - message timeout, idle icon and busy animation, etc
-        ResourceMap resourceMap = getResourceMap();
-        int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
-        messageTimer = new Timer(messageTimeout, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                _statusMessageLabel.setText("");
+      // status bar initialization - message timeout, idle icon and busy animation, etc
+      ResourceMap resourceMap = getResourceMap();
+      int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
+      messageTimer = new Timer(messageTimeout, new ActionListener() {
+
+         public void actionPerformed(ActionEvent e) {
+            _statusMessageLabel.setText("");
+         }
+      });
+      messageTimer.setRepeats(false);
+      int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
+      for (int i = 0; i < busyIcons.length; i++) {
+         busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
+      }
+      busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
+
+         public void actionPerformed(ActionEvent e) {
+            busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
+            _statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
+         }
+      });
+      idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
+      _statusAnimationLabel.setIcon(idleIcon);
+      _progressBar.setVisible(false);
+
+      // connecting action tasks to status bar via TaskMonitor
+      TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
+      taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+
+         public void propertyChange(java.beans.PropertyChangeEvent evt) {
+            String propertyName = evt.getPropertyName();
+            if ("started".equals(propertyName)) {
+               if (!busyIconTimer.isRunning()) {
+                  _statusAnimationLabel.setIcon(busyIcons[0]);
+                  busyIconIndex = 0;
+                  busyIconTimer.start();
+               }
+               _progressBar.setVisible(true);
+               _progressBar.setIndeterminate(true);
+            } else if ("done".equals(propertyName)) {
+               busyIconTimer.stop();
+               _statusAnimationLabel.setIcon(idleIcon);
+               _progressBar.setVisible(false);
+               _progressBar.setValue(0);
+            } else if ("message".equals(propertyName)) {
+               String text = (String) (evt.getNewValue());
+               _statusMessageLabel.setText((text == null) ? "" : text);
+               messageTimer.restart();
+            } else if ("progress".equals(propertyName)) {
+               int value = (Integer) (evt.getNewValue());
+               _progressBar.setVisible(true);
+               _progressBar.setIndeterminate(false);
+               _progressBar.setValue(value);
             }
-        });
-        messageTimer.setRepeats(false);
-        int busyAnimationRate = resourceMap.getInteger("StatusBar.busyAnimationRate");
-        for (int i = 0; i < busyIcons.length; i++) {
-            busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
-        }
-        busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
-                _statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
-            }
-        });
-        idleIcon = resourceMap.getIcon("StatusBar.idleIcon");
-        _statusAnimationLabel.setIcon(idleIcon);
-        _progressBar.setVisible(false);
+         }
+      });
+   }
 
-        // connecting action tasks to status bar via TaskMonitor
-        TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
-        taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                String propertyName = evt.getPropertyName();
-                if ("started".equals(propertyName)) {
-                    if (!busyIconTimer.isRunning()) {
-                        _statusAnimationLabel.setIcon(busyIcons[0]);
-                        busyIconIndex = 0;
-                        busyIconTimer.start();
-                    }
-                    _progressBar.setVisible(true);
-                    _progressBar.setIndeterminate(true);
-                } else if ("done".equals(propertyName)) {
-                    busyIconTimer.stop();
-                    _statusAnimationLabel.setIcon(idleIcon);
-                    _progressBar.setVisible(false);
-                    _progressBar.setValue(0);
-                } else if ("message".equals(propertyName)) {
-                    String text = (String)(evt.getNewValue());
-                    _statusMessageLabel.setText((text == null) ? "" : text);
-                    messageTimer.restart();
-                } else if ("progress".equals(propertyName)) {
-                    int value = (Integer)(evt.getNewValue());
-                    _progressBar.setVisible(true);
-                    _progressBar.setIndeterminate(false);
-                    _progressBar.setValue(value);
-                }
-            }
-        });
-    }
+   @Action
+   public void showAboutBox() {
+      if (aboutBox == null) {
+         JFrame mainFrame = Main.getApplication().getMainFrame();
+         aboutBox = new AboutBox(mainFrame);
+         aboutBox.setLocationRelativeTo(mainFrame);
+      }
+      Main.getApplication().show(aboutBox);
+   }
 
-    @Action
-    public void showAboutBox() {
-        if (aboutBox == null) {
-            JFrame mainFrame = Main.getApplication().getMainFrame();
-            aboutBox = new AboutBox(mainFrame);
-            aboutBox.setLocationRelativeTo(mainFrame);
-        }
-        Main.getApplication().show(aboutBox);
-    }
-
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
+   /** This method is called from within the constructor to
+    * initialize the form.
+    * WARNING: Do NOT modify this code. The content of this method is
+    * always regenerated by the Form Editor.
+    */
+   @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -275,136 +277,162 @@ public class MainWindow extends FrameView {
         setStatusBar(_statusPanel);
     }// </editor-fold>//GEN-END:initComponents
 
-    @Action
-    public Task saveIndex() {
-        return new SaveIndexTask(getApplication());
-    }
+   @Action
+   public Task saveIndex() {
+      return new SaveIndexTask(getApplication());
+   }
 
-    private class SaveIndexTask extends org.jdesktop.application.Task<Object, Void> {
-        SaveIndexTask(org.jdesktop.application.Application app) {
-            super(app);
-            System.err.println("Saving indexed data...");
-        }
-        @Override protected Object doInBackground() {
-            System.err.println("Saving indexed data to a file...");
-            kwic.index.IndexedString si = new kwic.index.IndexedString("Hello World!");
-            System.err.println(si.toString() + " => " + si.getIndex());
-            return null;  // return your result
-        }
-        @Override protected void succeeded(Object result) {
-            // Runs on the EDT.  Update the GUI based on
-            // the result computed by doInBackground().
-            System.err.println("Save completed successfully.");
-        }
-    }
+   private class SaveIndexTask extends org.jdesktop.application.Task<Object, Void> {
 
-    @Action
-    public Task loadFile() {
-        return new LoadFileTask(getApplication());
-    }
+      SaveIndexTask(org.jdesktop.application.Application app) {
+         super(app);
+         System.err.println("Saving indexed data...");
+      }
 
-    private class LoadFileTask extends org.jdesktop.application.Task<Object, Void> {
-        LoadFileTask(org.jdesktop.application.Application app) {
-            super(app);
+      @Override
+      protected Object doInBackground() {
+         System.err.println("Saving indexed data to a file...");
+         kwic.index.IndexedString si = new kwic.index.IndexedString("Hello World!");
+         System.err.println(si.toString() + " => " + si.getIndex());
+         return null;  // return your result
+      }
 
-            //bring up the file dialog to select a file
-            JFileChooser fc = new JFileChooser();
-            int returnVal = fc.showOpenDialog(_mainPanel);
+      @Override
+      protected void succeeded(Object result) {
+         // Runs on the EDT.  Update the GUI based on
+         // the result computed by doInBackground().
+         System.err.println("Save completed successfully.");
+      }
+   }
 
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                _file = fc.getSelectedFile();
-            } else {
-                _file = null;
-            }
-        }
-        @Override protected Object doInBackground() {
-            InputReader ir = null;
-            IndexList il = null;
+   @Action
+   public Task loadFile() {
+      return new LoadFileTask(getApplication());
+   }
+
+   private class LoadFileTask extends org.jdesktop.application.Task<Object, Void> {
+
+      LoadFileTask(org.jdesktop.application.Application app) {
+         super(app);
+
+         //bring up the file dialog to select a file
+         JFileChooser fc = new JFileChooser();
+         int returnVal = fc.showOpenDialog(_mainPanel);
+
+         if (returnVal == JFileChooser.APPROVE_OPTION) {
+            _file = fc.getSelectedFile();
+         } else {
+            _file = null;
+         }
+      }
+
+      @Override
+      protected Object doInBackground() {
+         InputReader ir = null;
+         IndexList il = null;
+         IndexedString si = null;
+         //open the input file for reading
+         try {
+            //read in one shiftedinput after the other
+            il = new IndexList(new CircularShifter());
+            ir = new InputReader(_file.toString());
+         } catch (FileNotFoundException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+         }
+
+         //read in the input, one IndexedString after the next
+         do {
             try {
-                //read in one shiftedinput after the other
-                il = new IndexList(new CircularShifter());
-                IndexedString si = null;
-                ir = new InputReader(_file.toString());
-                while((si = ir.next()) != null) {
-                    il.add(si);
-                    ((DefaultListModel)MainWindow.this._inputRecordList.getModel()).addElement(si);
-                }
-
-                for(IndexedString sin : il) {
-                    ((DefaultListModel)MainWindow.this._indexRecordList.getModel()).addElement(sin.getIndex() + " | " + sin.toString());
-                }
-                return il;
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-            } finally {
-                try {
-                    ir.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-                }
+               si = ir.next();
+            } catch (java.util.regex.PatternSyntaxException pse) {
+               //FIXME could mark bad lines and then show them somewhere
+               pse.printStackTrace();
+               continue;
             }
-            return il;
-        }
-        @Override protected void succeeded(Object result) {
-            // Runs on the EDT.  Update the GUI based on
-            // the result computed by doInBackground().
-        }
+            if (si == null) {
+               break;
+            }
+            il.add(si);
+            ((DefaultListModel) MainWindow.this._inputRecordList.getModel()).addElement(si);
+         } while (true);
 
-        private File _file;
-    }
+         //update the DataModel for the indexed data
+         for (IndexedString sin : il) {
+            ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).addElement(sin.getIndex() + " | " + sin.toString());
+         }
+         try {
+            ir.close();
+         } catch (IOException ex) {
+            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
+         }
+         return il;
+      }
 
-    @Action
-    public Task removeDataAndIndex() {
-        return new RemoveDataAndIndexTask(getApplication());
-    }
+      @Override
+      protected void succeeded(Object result) {
+         // Runs on the EDT.  Update the GUI based on
+         // the result computed by doInBackground().
+      }
+      private File _file;
+   }
 
-    private class RemoveDataAndIndexTask extends org.jdesktop.application.Task<Object, Void> {
-        RemoveDataAndIndexTask(org.jdesktop.application.Application app) {
-            // Runs on the EDT.  Copy GUI state that
-            // doInBackground() depends on from parameters
-            // to RemoveDataAndIndexTask fields, here.
-            super(app);
-        }
-        @Override protected Object doInBackground() {
-            // Your Task's code here.  This method runs
-            // on a background thread, so don't reference
-            // the Swing GUI from here.
-            return null;  // return your result
-        }
-        @Override protected void succeeded(Object result) {
-            // Runs on the EDT.  Update the GUI based on
-            // the result computed by doInBackground().
-        }
-    }
+   @Action
+   public Task removeDataAndIndex() {
+      return new RemoveDataAndIndexTask(getApplication());
+   }
 
-    @Action
-    public Task removeIndex() {
-        return new RemoveIndexTask(getApplication());
-    }
+   private class RemoveDataAndIndexTask extends org.jdesktop.application.Task<Object, Void> {
 
-    private class RemoveIndexTask extends org.jdesktop.application.Task<Object, Void> {
-        RemoveIndexTask(org.jdesktop.application.Application app) {
-            // Runs on the EDT.  Copy GUI state that
-            // doInBackground() depends on from parameters
-            // to RemoveIndexTask fields, here.
-            super(app);
-        }
-        @Override protected Object doInBackground() {
-            // Your Task's code here.  This method runs
-            // on a background thread, so don't reference
-            // the Swing GUI from here.
-            return null;  // return your result
-        }
-        @Override protected void succeeded(Object result) {
-            // Runs on the EDT.  Update the GUI based on
-            // the result computed by doInBackground().
-        }
-    }
+      RemoveDataAndIndexTask(org.jdesktop.application.Application app) {
+         // Runs on the EDT.  Copy GUI state that
+         // doInBackground() depends on from parameters
+         // to RemoveDataAndIndexTask fields, here.
+         super(app);
+      }
 
+      @Override
+      protected Object doInBackground() {
+         // Your Task's code here.  This method runs
+         // on a background thread, so don't reference
+         // the Swing GUI from here.
+         return null;  // return your result
+      }
 
+      @Override
+      protected void succeeded(Object result) {
+         // Runs on the EDT.  Update the GUI based on
+         // the result computed by doInBackground().
+      }
+   }
 
+   @Action
+   public Task removeIndex() {
+      return new RemoveIndexTask(getApplication());
+   }
 
+   private class RemoveIndexTask extends org.jdesktop.application.Task<Object, Void> {
 
+      RemoveIndexTask(org.jdesktop.application.Application app) {
+         // Runs on the EDT.  Copy GUI state that
+         // doInBackground() depends on from parameters
+         // to RemoveIndexTask fields, here.
+         super(app);
+      }
+
+      @Override
+      protected Object doInBackground() {
+         // Your Task's code here.  This method runs
+         // on a background thread, so don't reference
+         // the Swing GUI from here.
+         return null;  // return your result
+      }
+
+      @Override
+      protected void succeeded(Object result) {
+         // Runs on the EDT.  Update the GUI based on
+         // the result computed by doInBackground().
+      }
+   }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPopupMenu _indexPopupMenu;
     private javax.swing.JList _indexRecordList;
@@ -425,14 +453,12 @@ public class MainWindow extends FrameView {
     private javax.swing.JPanel _statusPanel;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     // End of variables declaration//GEN-END:variables
-
-    private final Timer messageTimer;
-    private final Timer busyIconTimer;
-    private final Icon idleIcon;
-    private final Icon[] busyIcons = new Icon[15];
-    private int busyIconIndex = 0;
-    private JDialog aboutBox;
-
-    private ListModel _inputModel = new DefaultListModel();
-    private ListModel _indexModel = new DefaultListModel();
+   private final Timer messageTimer;
+   private final Timer busyIconTimer;
+   private final Icon idleIcon;
+   private final Icon[] busyIcons = new Icon[15];
+   private int busyIconIndex = 0;
+   private JDialog aboutBox;
+   private ListModel _inputModel = new DefaultListModel();
+   private ListModel _indexModel = new DefaultListModel();
 }
