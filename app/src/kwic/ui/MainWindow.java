@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.ArrayList;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -26,6 +25,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
 import kwic.index.CircularShifter;
 import kwic.index.IndexList;
 import kwic.index.InputReader;
@@ -139,10 +139,10 @@ public class MainWindow extends FrameView {
       _statusMessageLabel = new javax.swing.JLabel();
       _statusAnimationLabel = new javax.swing.JLabel();
       _progressBar = new javax.swing.JProgressBar();
-      _inputPopupMenu = new javax.swing.JPopupMenu();
-      _inputRemovePopup = new javax.swing.JMenuItem();
       _indexPopupMenu = new javax.swing.JPopupMenu();
       _indexRemovePopup = new javax.swing.JMenuItem();
+      _inputPopupMenu = new javax.swing.JPopupMenu();
+      _inputRemovePopup = new javax.swing.JMenuItem();
 
       _mainPanel.setMinimumSize(new java.awt.Dimension(100, 110));
       _mainPanel.setName("_mainPanel"); // NOI18N
@@ -154,16 +154,16 @@ public class MainWindow extends FrameView {
 
       _inputScrollPane.setName("_inputScrollPane"); // NOI18N
 
-      _inputRecordList.setComponentPopupMenu(_indexPopupMenu);
+      _inputRecordList.setComponentPopupMenu(_inputPopupMenu);
       _inputRecordList.setName("_inputRecordList"); // NOI18N
       _inputScrollPane.setViewportView(_inputRecordList);
 
       _kwicSplitPane.setLeftComponent(_inputScrollPane);
 
-      _indexScrollPane.setComponentPopupMenu(_inputPopupMenu);
+      _indexScrollPane.setComponentPopupMenu(_indexPopupMenu);
       _indexScrollPane.setName("_indexScrollPane"); // NOI18N
 
-      _indexRecordList.setComponentPopupMenu(_inputPopupMenu);
+      _indexRecordList.setComponentPopupMenu(_indexPopupMenu);
       _indexRecordList.setName("_indexRecordList"); // NOI18N
       _indexScrollPane.setViewportView(_indexRecordList);
 
@@ -260,14 +260,6 @@ public class MainWindow extends FrameView {
             .addGap(3, 3, 3))
       );
 
-      _inputPopupMenu.setName("_inputPopupMenu"); // NOI18N
-
-      _inputRemovePopup.setAction(actionMap.get("removeDataAndIndex")); // NOI18N
-      _inputRemovePopup.setText(resourceMap.getString("_inputRemovePopup.text")); // NOI18N
-      _inputRemovePopup.setToolTipText(resourceMap.getString("_inputRemovePopup.toolTipText")); // NOI18N
-      _inputRemovePopup.setName("_inputRemovePopup"); // NOI18N
-      _inputPopupMenu.add(_inputRemovePopup);
-
       _indexPopupMenu.setName("_indexPopupMenu"); // NOI18N
 
       _indexRemovePopup.setAction(actionMap.get("removeIndex")); // NOI18N
@@ -275,6 +267,14 @@ public class MainWindow extends FrameView {
       _indexRemovePopup.setToolTipText(resourceMap.getString("_indexRemovePopup.toolTipText")); // NOI18N
       _indexRemovePopup.setName("_indexRemovePopup"); // NOI18N
       _indexPopupMenu.add(_indexRemovePopup);
+
+      _inputPopupMenu.setName("_inputPopupMenu"); // NOI18N
+
+      _inputRemovePopup.setAction(actionMap.get("removeDataAndIndex")); // NOI18N
+      _inputRemovePopup.setText(resourceMap.getString("_inputRemovePopup.text")); // NOI18N
+      _inputRemovePopup.setToolTipText(resourceMap.getString("_inputRemovePopup.toolTipText")); // NOI18N
+      _inputRemovePopup.setName("_inputRemovePopup"); // NOI18N
+      _inputPopupMenu.add(_inputRemovePopup);
 
       setComponent(_mainPanel);
       setMenuBar(_menu);
@@ -371,9 +371,11 @@ public class MainWindow extends FrameView {
          IndexedString si = null;
          //open the input file for reading
          try {
-            //read in one shiftedinput after the other
+            //clear out everything to start fresh
             MainWindow.this._index = new IndexList(new CircularShifter());
             ir = new InputReader(_file.toString());
+            ((DefaultListModel) MainWindow.this._inputRecordList.getModel()).clear();
+            ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).clear();
          } catch (FileNotFoundException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
          }
@@ -396,6 +398,7 @@ public class MainWindow extends FrameView {
 
          //update the DataModel for the indexed data
          for (IndexedString sin : MainWindow.this._index) {
+            System.out.println(sin.toString());
             ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).addElement(sin.getIndex() + " | " + sin.toString());
          }
          try {
@@ -403,6 +406,7 @@ public class MainWindow extends FrameView {
          } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
          }
+
          return MainWindow.this._index;
       }
 
@@ -427,7 +431,7 @@ public class MainWindow extends FrameView {
          // to RemoveDataAndIndexTask fields, here.
          super(app);
          //copies the currently selected input lines
-         selection = MainWindow.this._indexRecordList.getSelectedValues();
+         selection = MainWindow.this._inputRecordList.getSelectedValues();
       }
 
 
@@ -480,12 +484,8 @@ public class MainWindow extends FrameView {
    private class RemoveIndexTask extends org.jdesktop.application.Task<Object, Void> {
 
       RemoveIndexTask(org.jdesktop.application.Application app) {
-         // Runs on the EDT.  Copy GUI state that
-         // doInBackground() depends on from parameters
-         // to RemoveIndexTask fields, here.
          super(app);
-         parentIndices = new ArrayList();
-         selection = MainWindow.this._inputRecordList.getSelectedValues();
+         selection = MainWindow.this._indexRecordList.getSelectedIndices();
       }
 
       /**here there be dragons. the KWIC system may have many entrys in _index so we should
@@ -497,55 +497,21 @@ public class MainWindow extends FrameView {
        **/
       @Override
       protected Object doInBackground() {
-         // Your Task's code here.  This method runs
-         // on a background thread, so don't reference
-         // the Swing GUI from here.
-         /*
-          for(int j=0; j< selection.length; ++j){
-
-              for(int jx=0; jx < ((DefaultListModel) MainWindow.this._inputRecordList.getModel()).size(); ++jx){
-                  Object candidate = ((DefaultListModel) MainWindow.this._inputRecordList.getModel()).elementAt(jx);
-                  if(candidate.toString().compareTo(selection[j].toString()) == 0){
-                      parentIndices.add(candidate);
-                  }
-              }
-          }
-          if(parentIndices.size() == 0){
-              return null;
-          }*/
-          /*
-          for(IndexedString sin : MainWindow.this._index){
-              for(int jw=0; jw < parentIndices.size(); ++jw){
-                if(sin.originIndex().compareTo(((IndexedString)parentIndices.get(jw)).getIndex()) == 0){
-
-                }
-              }
-          }*/
-          /*
-          IndexedString tmp = new IndexedString(" ");
-          for(int jw=0; jw < parentIndices.size(); ++jw){
-              for(IndexedString sin : MainWindow.this._index){
-                System.err.println(((IndexedString)parentIndices.get(jw)).getIndex() + " versus " + sin.originIndex());
-                if(sin.originIndex() != null){
-                if(sin.originIndex().compareTo(((IndexedString)(parentIndices.get(jw))).getIndex()) == 0){
-                    tmp = sin;
-                }
-                }
-              }
-              if(tmp.getIndex().compareTo(" ") != 0){
-                MainWindow.this._index.remove(tmp);
-              }
-          }
-         
-
-          ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).removeAllElements();
-
-          //update the DataModel for the indexed data
-         for (IndexedString sin : MainWindow.this._index) {
-            ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).addElement(sin.getIndex() + " | " + sin.toString());
+         for(int cand = this.selection.length - 1; cand >= 0; cand--) {
+            int idx = this.selection[cand];
+            //IndexedString rm = (IndexedString)cand;
+            String[] tokens = ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).elementAt(idx).toString().split(" \\| ");
+            IndexedString rm = new IndexedString(tokens[1].trim(), tokens[0].trim());
+            if(MainWindow.this._index.contains(rm)) {
+               //if no more origin index values match rm.getOriginIndex(), remove the input line
+               MainWindow.this._index.remove(rm);
+               ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).remove(idx);
+            }
+            ((ListSelectionModel) MainWindow.this._indexRecordList.getSelectionModel()).clearSelection();
+            MainWindow.this._indexRecordList.updateUI();
          }
-          */
-          return null;  // return your result
+
+         return null;  // return your result
       }
 
       @Override
@@ -553,8 +519,7 @@ public class MainWindow extends FrameView {
          // Runs on the EDT.  Update the GUI based on
          // the result computed by doInBackground().
       }
-      private Object[] selection;
-      private ArrayList parentIndices;
+      private int[] selection;
 
    }
    // Variables declaration - do not modify//GEN-BEGIN:variables
