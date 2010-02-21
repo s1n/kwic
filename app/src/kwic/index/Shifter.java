@@ -7,6 +7,7 @@ import java.util.Arrays;
  * Shifter interface to classes that can reorganize input data for indexing.
  */
 public abstract class Shifter {
+   abstract void clear();
 
    abstract IndexedString next();
 
