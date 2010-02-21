@@ -80,7 +80,8 @@ public class IndexedString implements Comparable<IndexedString> {
    }
 
    public boolean valid() throws java.util.regex.PatternSyntaxException {
-      return this._input.matches("^[A-Za-z ,.()]+$");
+      return this._input.matches("^[A-Za-z ]+$");
+      //return true;
    }
 }
  
