@@ -1,7 +1,5 @@
 package kwic.index;
 
-import java.util.Collection;
-
 /**
  * Collects all the results by maintaining order to the results. This object
  * can also be iterated over to inspect the indexed results.
