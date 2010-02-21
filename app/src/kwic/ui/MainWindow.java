@@ -328,12 +328,11 @@ public class MainWindow extends FrameView {
       @Override
       protected Object doInBackground() {
          InputReader ir = null;
-         IndexList il = null;
          IndexedString si = null;
          //open the input file for reading
          try {
             //read in one shiftedinput after the other
-            il = new IndexList(new CircularShifter());
+            MainWindow.this._index = new IndexList(new CircularShifter());
             ir = new InputReader(_file.toString());
          } catch (FileNotFoundException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
@@ -351,12 +350,12 @@ public class MainWindow extends FrameView {
             if (si == null) {
                break;
             }
-            il.add(si);
+            MainWindow.this._index.add(si);
             ((DefaultListModel) MainWindow.this._inputRecordList.getModel()).addElement(si);
          } while (true);
 
          //update the DataModel for the indexed data
-         for (IndexedString sin : il) {
+         for (IndexedString sin : MainWindow.this._index) {
             ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).addElement(sin.getIndex() + " | " + sin.toString());
          }
          try {
@@ -364,7 +363,7 @@ public class MainWindow extends FrameView {
          } catch (IOException ex) {
             Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
          }
-         return il;
+         return MainWindow.this._index;
       }
 
       @Override
@@ -460,4 +459,5 @@ public class MainWindow extends FrameView {
    private JDialog aboutBox;
    private ListModel _inputModel = new DefaultListModel();
    private ListModel _indexModel = new DefaultListModel();
+   private IndexList _index = null;
 }
