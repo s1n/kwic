@@ -10,13 +10,23 @@ public class IndexList extends java.util.TreeSet<kwic.index.IndexedString> {
       this._shift = cs_;
    }
 
+   public boolean contains(IndexedString o) {
+      for(IndexedString is : this) {
+         if(is.getIndex().equalsIgnoreCase(o.getIndex())) {
+            System.out.println("MATCH!");
+            return true;
+         }
+      }
+      return false;
+   }
+
    @Override
    public boolean add(IndexedString e_) {
+      this._shift.clear();
       this._shift.generatePermutations(e_);
 
       IndexedString is;
       while ((is = this._shift.next()) != null) {
-         //FIXME don't add is if it's already in this TreeSet
          super.add(is);
       }
       return true;
