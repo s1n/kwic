@@ -22,7 +22,7 @@ public abstract class Shifter {
       for (String s : this._tokens) {
          sb.append(s).append(" ");
       }
-      return sb.toString();
+      return sb.toString().trim();
    }
    protected ArrayList<String> _tokens;
 }

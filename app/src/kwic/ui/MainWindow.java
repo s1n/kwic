@@ -431,40 +431,52 @@ public class MainWindow extends FrameView {
          // to RemoveDataAndIndexTask fields, here.
          super(app);
          //copies the currently selected input lines
-         selection = MainWindow.this._inputRecordList.getSelectedValues();
+         selection = MainWindow.this._inputRecordList.getSelectedIndices();
       }
 
 
       @Override
       protected Object doInBackground() {
-         // This method runs
-         // on a background thread, so don't reference
-         // the Swing GUI from here.
+         //loop over the selections in input, and remove the shifts from the output
+         DefaultListModel dlminput = ((DefaultListModel)MainWindow.this._inputRecordList.getModel());
+         DefaultListModel dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
+         for(int cand = this.selection.length - 1; cand >= 0; cand--) {
+            int idx = this.selection[cand];
+            String input = dlminput.elementAt(idx).toString();
+            IndexedString rmin = MainWindow.this._index.findInput(input.trim());
+            if(rmin != null && MainWindow.this._index.containsInput(rmin)) {
+               //we've identified the inputRecord, let's remove all the indexRecords
+               for(int i = 0; i < MainWindow.this._index.size(); i++) {
+                  String[] tokens = dlmindex.elementAt(i).toString().split(" \\| ");
+                  IndexedString rmidx = MainWindow.this._index.findIndex(tokens[0].trim());
+                  if(rmidx != null && rmin.getIndex().equalsIgnoreCase(rmidx.originIndex())) {
+                     //if no more origin index values match rm.getOriginIndex(), remove the input line
+                     MainWindow.this._index.remove(rmidx);
+                     dlmindex.remove(i);
+                  }
+                  //force a GUI update
+                  ((ListSelectionModel)MainWindow.this._indexRecordList.getSelectionModel()).clearSelection();
+                  MainWindow.this._indexRecordList.updateUI();
+               }
 
-          //since I am using an iterator on _index, we cannot do the remove at the same time
-          //so we hold a reference and remove it later
-          IndexedString tmp = new IndexedString(" ");
-           for(int j=0; j< selection.length; ++j){
-               for (IndexedString sin : MainWindow.this._index) {
-                //compare the first 40 chars of the string (the index)
-                if((sin.getIndex()).compareTo((selection[j].toString()).substring(0, 40)) == 0){
-                   tmp = sin;
-                   break;
-                }
-              }
-              //now that we aren't using the iterator we can remove this input line
-              if(tmp.getIndex().compareTo(" ") != 0){
-                MainWindow.this._index.remove(tmp);
-              }
-           }
+               //finally, remove the inputRecord
+               MainWindow.this._index.remove(rmin);
 
-          //now that we've removed the lines from _index, we rebuild _indexRecordList
-          ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).removeAllElements();
-          //update the DataModel for the indexed data
-         for (IndexedString sin : MainWindow.this._index) {
-            ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).addElement(sin.getIndex() + " | " + sin.toString());
+               //find where the rmin is in the DataModel
+               for(int i = 0; i < dlmindex.size(); i++) {
+                  if(dlmindex.elementAt(i).toString().startsWith(rmin.getIndex())) {
+                     dlmindex.remove(i);
+                  }
+               }
+               
+               //remove it from the input as well
+               dlminput.remove(idx);
+            }
+            //force a GUI update
+            ((ListSelectionModel)MainWindow.this._inputRecordList.getSelectionModel()).clearSelection();
+            MainWindow.this._inputRecordList.updateUI();
          }
-          return null;  // return your result
+         return MainWindow.this._index;
       }
 
 
@@ -473,7 +485,7 @@ public class MainWindow extends FrameView {
          // Runs on the EDT.  Update the GUI based on
          // the result computed by doInBackground().
       }
-      private Object[] selection;
+      private int[] selection;
    }
 
    @Action
@@ -497,15 +509,16 @@ public class MainWindow extends FrameView {
        **/
       @Override
       protected Object doInBackground() {
+         DefaultListModel dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
          for(int cand = this.selection.length - 1; cand >= 0; cand--) {
             int idx = this.selection[cand];
             //IndexedString rm = (IndexedString)cand;
-            String[] tokens = ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).elementAt(idx).toString().split(" \\| ");
+            String[] tokens = dlmindex.elementAt(idx).toString().split(" \\| ");
             IndexedString rm = new IndexedString(tokens[1].trim(), tokens[0].trim());
-            if(MainWindow.this._index.contains(rm)) {
+            if(MainWindow.this._index.containsIndex(rm)) {
                //if no more origin index values match rm.getOriginIndex(), remove the input line
                MainWindow.this._index.remove(rm);
-               ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).remove(idx);
+               dlmindex.remove(idx);
             }
             ((ListSelectionModel) MainWindow.this._indexRecordList.getSelectionModel()).clearSelection();
             MainWindow.this._indexRecordList.updateUI();
