@@ -363,6 +363,8 @@ public class MainWindow extends FrameView {
          } else {
             _file = null;
          }
+         dlminput = ((DefaultListModel)MainWindow.this._inputRecordList.getModel());
+         dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
       }
 
       @Override
@@ -412,10 +414,12 @@ public class MainWindow extends FrameView {
 
       @Override
       protected void succeeded(Object result) {
-         // Runs on the EDT.  Update the GUI based on
-         // the result computed by doInBackground().
+         MainWindow.this._inputRecordList.setModel(dlminput);
+         MainWindow.this._indexRecordList.setModel(dlmindex);
       }
       private File _file;
+      private DefaultListModel dlmindex = null;
+      private DefaultListModel dlminput = null;
    }
 
    @Action
@@ -432,27 +436,34 @@ public class MainWindow extends FrameView {
          super(app);
          //copies the currently selected input lines
          selection = MainWindow.this._inputRecordList.getSelectedIndices();
+         dlminput = ((DefaultListModel)MainWindow.this._inputRecordList.getModel());
+         dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
       }
 
 
       @Override
       protected Object doInBackground() {
          //loop over the selections in input, and remove the shifts from the output
-         DefaultListModel dlminput = ((DefaultListModel)MainWindow.this._inputRecordList.getModel());
-         DefaultListModel dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
          for(int cand = this.selection.length - 1; cand >= 0; cand--) {
             int idx = this.selection[cand];
             String input = dlminput.elementAt(idx).toString();
             IndexedString rmin = MainWindow.this._index.findInput(input.trim());
+            System.out.println("Removing ====> " + input + " / " + rmin.getIndex());
             if(rmin != null && MainWindow.this._index.containsInput(rmin)) {
                //we've identified the inputRecord, let's remove all the indexRecords
                for(int i = 0; i < MainWindow.this._index.size(); i++) {
                   String[] tokens = dlmindex.elementAt(i).toString().split(" \\| ");
                   IndexedString rmidx = MainWindow.this._index.findIndex(tokens[0].trim());
+                  System.out.println("Checking " + rmidx.toString() + " / " + rmidx.getIndex() + " / " + rmidx.originIndex());
                   if(rmidx != null && rmin.getIndex().equalsIgnoreCase(rmidx.originIndex())) {
                      //if no more origin index values match rm.getOriginIndex(), remove the input line
+                     System.out.println("Removing " + i + " @ " + rmidx.toString());
                      MainWindow.this._index.remove(rmidx);
-                     dlmindex.remove(i);
+                     dlmindex.remove(i--);
+                  } else if(rmidx != null && rmin.compareTo(rmidx) == 0) {
+                     System.out.println("Removing origin " + i + " @ " + rmidx.toString());
+                     MainWindow.this._index.remove(rmidx);
+                     dlmindex.remove(i--);
                   }
                   //force a GUI update
                   ((ListSelectionModel)MainWindow.this._indexRecordList.getSelectionModel()).clearSelection();
@@ -463,15 +474,17 @@ public class MainWindow extends FrameView {
                MainWindow.this._index.remove(rmin);
 
                //find where the rmin is in the DataModel
-               for(int i = 0; i < dlmindex.size(); i++) {
+               for(int i = 0; i < dlmindex.size() - 1; i++) {
                   if(dlmindex.elementAt(i).toString().startsWith(rmin.getIndex())) {
-                     dlmindex.remove(i);
+                     dlmindex.remove(i--);
+                     System.out.println("More Removing " + i + " @ " + rmin.toString());
                   }
                }
                
                //remove it from the input as well
                dlminput.remove(idx);
             }
+            System.out.println("Index size: " + MainWindow.this._index.size());
             //force a GUI update
             ((ListSelectionModel)MainWindow.this._inputRecordList.getSelectionModel()).clearSelection();
             MainWindow.this._inputRecordList.updateUI();
@@ -482,10 +495,12 @@ public class MainWindow extends FrameView {
 
       @Override
       protected void succeeded(Object result) {
-         // Runs on the EDT.  Update the GUI based on
-         // the result computed by doInBackground().
+         MainWindow.this._inputRecordList.setModel(dlminput);
+         MainWindow.this._indexRecordList.setModel(dlmindex);
       }
       private int[] selection;
+      private DefaultListModel dlmindex = null;
+      private DefaultListModel dlminput = null;
    }
 
    @Action
@@ -498,15 +513,9 @@ public class MainWindow extends FrameView {
       RemoveIndexTask(org.jdesktop.application.Application app) {
          super(app);
          selection = MainWindow.this._indexRecordList.getSelectedIndices();
+         dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
       }
 
-      /**here there be dragons. the KWIC system may have many entrys in _index so we should
-      *loop over that last, but because of the iteration concurent modification problem
-      *I've tried doing that loop first just to get it to work.
-      *now finding that the indexes on the inputrecordlist do not match the corresponding
-      *indexes on the _index, so that can't work as a way to find the parent indicies
-      *will have to iterate through the entire list multiple times, not ideal
-       **/
       @Override
       protected Object doInBackground() {
          DefaultListModel dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
@@ -524,16 +533,15 @@ public class MainWindow extends FrameView {
             MainWindow.this._indexRecordList.updateUI();
          }
 
-         return null;  // return your result
+         return MainWindow.this._index;
       }
 
       @Override
       protected void succeeded(Object result) {
-         // Runs on the EDT.  Update the GUI based on
-         // the result computed by doInBackground().
+         MainWindow.this._indexRecordList.setModel(dlmindex);
       }
       private int[] selection;
-
+      private DefaultListModel dlmindex = null;
    }
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.JPopupMenu _indexPopupMenu;
