@@ -9,7 +9,6 @@ import java.util.logging.Logger;
 
 /**
  * Shifted input. Keeps track of it's own index and the originating input.
- * @todo Remove the stored _input to compress.
  */
 public class IndexedString implements Comparable<IndexedString> {
 
@@ -44,6 +43,13 @@ public class IndexedString implements Comparable<IndexedString> {
       this._digest = createIndex(input_);
       this._index = getIndex();
       this._origin_digest = this._digest;
+      this._origin_index = this._index;
+   }
+
+   //use with care, digests are unset
+   public IndexedString(String input_, String index_) {
+      this._input = input_;
+      this._index = index_;
       this._origin_index = this._index;
    }
 
