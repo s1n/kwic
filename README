@@ -1,9 +1,26 @@
 CS. 6362 Project - KWIC* Indexing System
 ========================================
 
+1) Introduction
+===============
+
 See the doc/ folder for more information regarding this project.
 
 Contributors:
 
 Jason Switzer - jswitzer@gmail.com
 Cliff Halasz - miliways@gmail.com
+
+2) Building
+===========
+
+To build locally, execute:
+
+$ ant clean compile jar
+
+This will create a JAR file in the dist/ folder. To execute the
+application, do the following:
+
+$ java -jar "KWICUserInterface.jar"
+
+More information can be found in app/dist/README.TXT.
