@@ -276,6 +276,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="_inputRemovePopup">
           <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="kwic.ui.MainWindow" id="removeDataAndIndex" methodName="removeDataAndIndex"/>
+            </Property>
             <Property name="text" type="java.lang.String" resourceKey="_inputRemovePopup.text"/>
             <Property name="toolTipText" type="java.lang.String" resourceKey="_inputRemovePopup.toolTipText"/>
             <Property name="name" type="java.lang.String" value="_inputRemovePopup" noResource="true"/>
@@ -294,6 +297,9 @@
       <SubComponents>
         <MenuItem class="javax.swing.JMenuItem" name="_indexRemovePopup">
           <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="kwic.ui.MainWindow" id="removeIndex" methodName="removeIndex"/>
+            </Property>
             <Property name="text" type="java.lang.String" resourceKey="_indexRemovePopup.text"/>
             <Property name="toolTipText" type="java.lang.String" resourceKey="_indexRemovePopup.toolTipText"/>
             <Property name="name" type="java.lang.String" value="_indexRemovePopup" noResource="true"/>
