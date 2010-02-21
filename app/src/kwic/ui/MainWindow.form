@@ -64,7 +64,7 @@
                       <StringArray count="0"/>
                     </Property>
                     <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                      <ComponentRef name="_indexPopupMenu"/>
+                      <ComponentRef name="_inputPopupMenu"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="_inputRecordList" noResource="true"/>
                   </Properties>
@@ -74,7 +74,7 @@
             <Container class="javax.swing.JScrollPane" name="_indexScrollPane">
               <Properties>
                 <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                  <ComponentRef name="_inputPopupMenu"/>
+                  <ComponentRef name="_indexPopupMenu"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="_indexScrollPane" noResource="true"/>
               </Properties>
@@ -95,7 +95,7 @@
                       <StringArray count="0"/>
                     </Property>
                     <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                      <ComponentRef name="_inputPopupMenu"/>
+                      <ComponentRef name="_indexPopupMenu"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="_indexRecordList" noResource="true"/>
                   </Properties>
@@ -265,27 +265,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPopupMenu" name="_inputPopupMenu">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="_inputPopupMenu" noResource="true"/>
-      </Properties>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
-      <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="_inputRemovePopup">
-          <Properties>
-            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-              <action class="kwic.ui.MainWindow" id="removeDataAndIndex" methodName="removeDataAndIndex"/>
-            </Property>
-            <Property name="text" type="java.lang.String" resourceKey="_inputRemovePopup.text"/>
-            <Property name="toolTipText" type="java.lang.String" resourceKey="_inputRemovePopup.toolTipText"/>
-            <Property name="name" type="java.lang.String" value="_inputRemovePopup" noResource="true"/>
-          </Properties>
-        </MenuItem>
-      </SubComponents>
-    </Container>
     <Container class="javax.swing.JPopupMenu" name="_indexPopupMenu">
       <Properties>
         <Property name="name" type="java.lang.String" value="_indexPopupMenu" noResource="true"/>
@@ -303,6 +282,27 @@
             <Property name="text" type="java.lang.String" resourceKey="_indexRemovePopup.text"/>
             <Property name="toolTipText" type="java.lang.String" resourceKey="_indexRemovePopup.toolTipText"/>
             <Property name="name" type="java.lang.String" value="_indexRemovePopup" noResource="true"/>
+          </Properties>
+        </MenuItem>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPopupMenu" name="_inputPopupMenu">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="_inputPopupMenu" noResource="true"/>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
+        <Property name="useNullLayout" type="boolean" value="true"/>
+      </Layout>
+      <SubComponents>
+        <MenuItem class="javax.swing.JMenuItem" name="_inputRemovePopup">
+          <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="kwic.ui.MainWindow" id="removeDataAndIndex" methodName="removeDataAndIndex"/>
+            </Property>
+            <Property name="text" type="java.lang.String" resourceKey="_inputRemovePopup.text"/>
+            <Property name="toolTipText" type="java.lang.String" resourceKey="_inputRemovePopup.toolTipText"/>
+            <Property name="name" type="java.lang.String" value="_inputRemovePopup" noResource="true"/>
           </Properties>
         </MenuItem>
       </SubComponents>
