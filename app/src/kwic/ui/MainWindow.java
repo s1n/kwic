@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -284,7 +285,7 @@ public class MainWindow extends FrameView {
    public Task saveIndex() {
       return new SaveIndexTask(getApplication());
    }
-
+   //Task to save a file
    private class SaveIndexTask extends org.jdesktop.application.Task<Object, Void> {
 
       SaveIndexTask(org.jdesktop.application.Application app) {
@@ -348,9 +349,8 @@ public class MainWindow extends FrameView {
    public Task loadFile() {
       return new LoadFileTask(getApplication());
    }
-
+   //Task to load a file
    private class LoadFileTask extends org.jdesktop.application.Task<Object, Void> {
-
       LoadFileTask(org.jdesktop.application.Application app) {
          super(app);
 
@@ -418,7 +418,7 @@ public class MainWindow extends FrameView {
    public Task removeDataAndIndex() {
       return new RemoveDataAndIndexTask(getApplication());
    }
-
+   //Task to remove an index line
    private class RemoveDataAndIndexTask extends org.jdesktop.application.Task<Object, Void> {
 
       RemoveDataAndIndexTask(org.jdesktop.application.Application app) {
@@ -426,28 +426,57 @@ public class MainWindow extends FrameView {
          // doInBackground() depends on from parameters
          // to RemoveDataAndIndexTask fields, here.
          super(app);
+         //copies the currently selected input lines
+         selection = MainWindow.this._indexRecordList.getSelectedValues();
       }
+
 
       @Override
       protected Object doInBackground() {
-         // Your Task's code here.  This method runs
+         // This method runs
          // on a background thread, so don't reference
          // the Swing GUI from here.
-         return null;  // return your result
+
+          //since I am using an iterator on _index, we cannot do the remove at the same time
+          //so we hold a reference and remove it later
+          IndexedString tmp = new IndexedString(" ");
+           for(int j=0; j< selection.length; ++j){
+               for (IndexedString sin : MainWindow.this._index) {
+                //compare the first 40 chars of the string (the index)
+                if((sin.getIndex()).compareTo((selection[j].toString()).substring(0, 40)) == 0){
+                   tmp = sin;
+                   break;
+                }
+              }
+              //now that we aren't using the iterator we can remove this input line
+              if(tmp.getIndex().compareTo(" ") != 0){
+                MainWindow.this._index.remove(tmp);
+              }
+           }
+
+          //now that we've removed the lines from _index, we rebuild _indexRecordList
+          ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).removeAllElements();
+          //update the DataModel for the indexed data
+         for (IndexedString sin : MainWindow.this._index) {
+            ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).addElement(sin.getIndex() + " | " + sin.toString());
+         }
+          return null;  // return your result
       }
+
 
       @Override
       protected void succeeded(Object result) {
          // Runs on the EDT.  Update the GUI based on
          // the result computed by doInBackground().
       }
+      private Object[] selection;
    }
 
    @Action
    public Task removeIndex() {
       return new RemoveIndexTask(getApplication());
    }
-
+   //Task to remove input lines
    private class RemoveIndexTask extends org.jdesktop.application.Task<Object, Void> {
 
       RemoveIndexTask(org.jdesktop.application.Application app) {
@@ -455,14 +484,68 @@ public class MainWindow extends FrameView {
          // doInBackground() depends on from parameters
          // to RemoveIndexTask fields, here.
          super(app);
+         parentIndices = new ArrayList();
+         selection = MainWindow.this._inputRecordList.getSelectedValues();
       }
 
+      /**here there be dragons. the KWIC system may have many entrys in _index so we should
+      *loop over that last, but because of the iteration concurent modification problem
+      *I've tried doing that loop first just to get it to work.
+      *now finding that the indexes on the inputrecordlist do not match the corresponding
+      *indexes on the _index, so that can't work as a way to find the parent indicies
+      *will have to iterate through the entire list multiple times, not ideal
+       **/
       @Override
       protected Object doInBackground() {
          // Your Task's code here.  This method runs
          // on a background thread, so don't reference
          // the Swing GUI from here.
-         return null;  // return your result
+         /*
+          for(int j=0; j< selection.length; ++j){
+
+              for(int jx=0; jx < ((DefaultListModel) MainWindow.this._inputRecordList.getModel()).size(); ++jx){
+                  Object candidate = ((DefaultListModel) MainWindow.this._inputRecordList.getModel()).elementAt(jx);
+                  if(candidate.toString().compareTo(selection[j].toString()) == 0){
+                      parentIndices.add(candidate);
+                  }
+              }
+          }
+          if(parentIndices.size() == 0){
+              return null;
+          }*/
+          /*
+          for(IndexedString sin : MainWindow.this._index){
+              for(int jw=0; jw < parentIndices.size(); ++jw){
+                if(sin.originIndex().compareTo(((IndexedString)parentIndices.get(jw)).getIndex()) == 0){
+
+                }
+              }
+          }*/
+          /*
+          IndexedString tmp = new IndexedString(" ");
+          for(int jw=0; jw < parentIndices.size(); ++jw){
+              for(IndexedString sin : MainWindow.this._index){
+                System.err.println(((IndexedString)parentIndices.get(jw)).getIndex() + " versus " + sin.originIndex());
+                if(sin.originIndex() != null){
+                if(sin.originIndex().compareTo(((IndexedString)(parentIndices.get(jw))).getIndex()) == 0){
+                    tmp = sin;
+                }
+                }
+              }
+              if(tmp.getIndex().compareTo(" ") != 0){
+                MainWindow.this._index.remove(tmp);
+              }
+          }
+         
+
+          ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).removeAllElements();
+
+          //update the DataModel for the indexed data
+         for (IndexedString sin : MainWindow.this._index) {
+            ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).addElement(sin.getIndex() + " | " + sin.toString());
+         }
+          */
+          return null;  // return your result
       }
 
       @Override
@@ -470,6 +553,9 @@ public class MainWindow extends FrameView {
          // Runs on the EDT.  Update the GUI based on
          // the result computed by doInBackground().
       }
+      private Object[] selection;
+      private ArrayList parentIndices;
+
    }
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.JPopupMenu _indexPopupMenu;
