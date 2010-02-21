@@ -3,6 +3,7 @@ package kwic.index;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.Collator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,6 +22,11 @@ public class IndexedString implements Comparable<IndexedString> {
    public IndexedString(IndexedString pre_) {
       this._origin_digest = pre_._digest;
       this._origin_index = pre_._index;
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      return this._input.equals(obj.toString());
    }
 
    public IndexedString(IndexedString pre_, String input_) {
@@ -69,19 +75,23 @@ public class IndexedString implements Comparable<IndexedString> {
    public String originIndex() {
       return this._origin_index;
    }
-   private java.lang.String _input;
-   private java.lang.String _index;
-   private java.lang.String _origin_index;
-   private java.security.MessageDigest _digest;
-   private java.security.MessageDigest _origin_digest;
 
    public int compareTo(IndexedString is_) {
-      return this._input.toUpperCase().compareTo(is_.toString().toUpperCase());
+      //return this._input.toUpperCase().compareTo(is_.toString().toUpperCase());
+      Collator coll = Collator.getInstance();
+      coll.setStrength(Collator.TERTIARY);
+      return coll.compare(this._input, is_.toString());
    }
 
    public boolean valid() throws java.util.regex.PatternSyntaxException {
       return this._input.matches("^[A-Za-z ]+$");
       //return true;
    }
+
+   private java.lang.String _input;
+   private java.lang.String _index;
+   private java.lang.String _origin_index;
+   private java.security.MessageDigest _digest;
+   private java.security.MessageDigest _origin_digest;
 }
  

@@ -24,7 +24,7 @@ public class IndexList extends java.util.TreeSet<kwic.index.IndexedString> {
 
    @Override
    public boolean remove(Object o) {
-      return super.remove(o);
+      return super.remove((IndexedString)o);
    }
    private Shifter _shift = null;
 }
