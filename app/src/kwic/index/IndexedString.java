@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
+import java.text.ParseException;
+import java.text.RuleBasedCollator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -113,11 +115,16 @@ public class IndexedString implements Comparable<IndexedString> {
     * string argument; and a value greater than 0 if this string is greater.
     */
    public int compareTo(IndexedString is_) {
-      //return this._input.toUpperCase().compareTo(is_.toString().toUpperCase());
-      Collator coll = Collator.getInstance();
-      //use tertiary collator to get expected sorting response
-      coll.setStrength(Collator.TERTIARY);
-      return coll.compare(this._input, is_.toString());
+      try {
+         //create the collator if it hasn't been done yet
+         if(null == this._collator) {
+            this._collator = new EnglishCollator();
+         }
+         return this._collator.compare(this._input, is_.toString());
+      } catch (ParseException ex) {
+         Logger.getLogger(IndexedString.class.getName()).log(Level.SEVERE, null, ex);
+      }
+      return -1;
    }
 
    public boolean valid() throws java.util.regex.PatternSyntaxException {
@@ -130,5 +137,6 @@ public class IndexedString implements Comparable<IndexedString> {
    private java.lang.String _origin_index;
    private java.security.MessageDigest _digest;
    private java.security.MessageDigest _origin_digest;
+   private EnglishCollator _collator = null;
 }
  
