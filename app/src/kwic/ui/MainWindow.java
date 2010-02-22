@@ -429,10 +429,16 @@ public class MainWindow extends FrameView {
    //Task to remove an index line
    private class RemoveDataAndIndexTask extends org.jdesktop.application.Task<Object, Void> {
 
+       /**
+        * Method to remove selected input lines
+        * Removing the input entries will also remove their corresponding indexed records.
+        * The only way to recall an input line is to load the original file again.
+        * Runs on the EDT, this method copies the selected items and
+        * the rest of the logic is performed in doInBackground()
+        * @param app the GUI state for the application using this task
+        */
       RemoveDataAndIndexTask(org.jdesktop.application.Application app) {
-         // Runs on the EDT.  Copy GUI state that
-         // doInBackground() depends on from parameters
-         // to RemoveDataAndIndexTask fields, here.
+
          super(app);
          //copies the currently selected input lines
          selection = MainWindow.this._inputRecordList.getSelectedIndices();
@@ -441,6 +447,12 @@ public class MainWindow extends FrameView {
       }
 
 
+      /**
+       * performs the main logic of RemoveDataAndIndexTask
+       * Iterates through the _index for each selection and removes all lines
+       * that have origin index values equal to selection's index
+       * @return _index updated to remove lines
+       */
       @Override
       protected Object doInBackground() {
          //loop over the selections in input, and remove the shifts from the output
@@ -455,6 +467,8 @@ public class MainWindow extends FrameView {
                   String[] tokens = dlmindex.elementAt(i).toString().split(" \\| ");
                   IndexedString rmidx = MainWindow.this._index.findIndex(tokens[0].trim());
                   System.out.println("Checking " + rmidx.toString() + " / " + rmidx.getIndex() + " / " + rmidx.originIndex());
+                  
+                  //I think this is the line that prevents a remove if you've removed the indexed lines
                   if(rmidx != null && rmin.getIndex().equalsIgnoreCase(rmidx.originIndex())) {
                      //if no more origin index values match rm.getOriginIndex(), remove the input line
                      System.out.println("Removing " + i + " @ " + rmidx.toString());
@@ -510,12 +524,27 @@ public class MainWindow extends FrameView {
    //Task to remove input lines
    private class RemoveIndexTask extends org.jdesktop.application.Task<Object, Void> {
 
+       /**
+        * Method to remove selected indexed lines
+        * Removing the indexed entries will not remove their corresponding input records or
+        * other indexed records corresponding to the original input record.
+        * The only way to recall an indexed line is to load the original input file again.
+        * Runs on the EDT, this method copies the selected items and
+        * the rest of the logic is performed in doInBackground()
+        * @param app the GUI state for the application using this task
+        */
       RemoveIndexTask(org.jdesktop.application.Application app) {
          super(app);
          selection = MainWindow.this._indexRecordList.getSelectedIndices();
          dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
       }
 
+      /**
+       * performs the main logic of RemoveIndexTask
+       * Iterates the selected indexes and removes them from _index
+       * then clears and updates the _indexRecordList from the new _index
+       * @return  _index updated to remove lines
+       */
       @Override
       protected Object doInBackground() {
          DefaultListModel dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
@@ -524,8 +553,8 @@ public class MainWindow extends FrameView {
             //IndexedString rm = (IndexedString)cand;
             String[] tokens = dlmindex.elementAt(idx).toString().split(" \\| ");
             IndexedString rm = new IndexedString(tokens[1].trim(), tokens[0].trim());
+
             if(MainWindow.this._index.containsIndex(rm)) {
-               //if no more origin index values match rm.getOriginIndex(), remove the input line
                MainWindow.this._index.remove(rm);
                dlmindex.remove(idx);
             }

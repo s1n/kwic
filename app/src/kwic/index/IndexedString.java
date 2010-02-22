@@ -38,6 +38,11 @@ public class IndexedString implements Comparable<IndexedString> {
       this._index = getIndex();
    }
 
+   /**
+    * Constructor, takes a string input_ and stores that as _input
+    * builds a digest off input and sets its index
+    * @param input_ a String to be encapsulated in the IndexedString
+    */
    public IndexedString(String input_) {
       this._input = input_;
       this._digest = createIndex(input_);
@@ -53,6 +58,11 @@ public class IndexedString implements Comparable<IndexedString> {
       this._origin_index = this._index;
    }
 
+   /**
+    * Method to generate a SHA-1 digest for the input String
+    * @param input_ the String to generate an index for
+    * @return _digest result of input
+    */
    public java.security.MessageDigest createIndex(String input_) {
       try {
          //compute the index from a SHA-1
@@ -65,6 +75,10 @@ public class IndexedString implements Comparable<IndexedString> {
       return _digest;
    }
 
+   /**
+    * Method to get the Index of the IndexedString
+    * @return index string, if null then calculates the index from the digest
+    */
    public String getIndex() {
       //recompute the index
       if (this._index == null || this._index.length() <= 0) {
@@ -73,18 +87,35 @@ public class IndexedString implements Comparable<IndexedString> {
       return this._index;
    }
 
+   /**
+    * Returns the original input string
+    * @return input the string the IndexedString was constructed with
+    */
    @Override
    public String toString() {
       return this._input;
    }
 
+   /**
+    * Returns the index of the parent IndexedString if there was one
+    * @return _origin_index a string with the index of the parent
+    */
    public String originIndex() {
       return this._origin_index;
    }
 
+   /**
+    * Compares two strings alphabetically using the Tertiary collator
+    *
+    * @param is_ IndexedString to be compared against
+    * @return int the value 0 if the argument string is equal to this string;
+    * a value less than 0 if this string is less than the
+    * string argument; and a value greater than 0 if this string is greater.
+    */
    public int compareTo(IndexedString is_) {
       //return this._input.toUpperCase().compareTo(is_.toString().toUpperCase());
       Collator coll = Collator.getInstance();
+      //use tertiary collator to get expected sorting response
       coll.setStrength(Collator.TERTIARY);
       return coll.compare(this._input, is_.toString());
    }

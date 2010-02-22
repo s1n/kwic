@@ -23,10 +23,20 @@ public class InputReader extends LineNumberReader {
       super(in, size);
    }
 
+   /**
+    * Constructor for reading from a local file
+    * @param file_ String location of the file
+    * @throws FileNotFoundException
+    */
    public InputReader(String file_) throws FileNotFoundException {
       this(new FileReader(new File(file_)));
    }
 
+   /**
+    * Iterator for the InputReader, returns line by line until it reads null
+    * @return IndexedString containing the next line of the file
+    * @throws java.util.regex.PatternSyntaxException
+    */
    public IndexedString next() throws java.util.regex.PatternSyntaxException {
       IndexedString ret = null;
       String line = "";

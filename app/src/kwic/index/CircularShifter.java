@@ -1,7 +1,7 @@
 package kwic.index;
 
 /**
- * Performs circular shifting of the input tokens.
+ * Class to perform circular shifting of input tokens.
  */
 public class CircularShifter extends Shifter {
 
@@ -19,6 +19,12 @@ public class CircularShifter extends Shifter {
       this._iter_position = 0;
    }
 
+   /**
+    * Method to iterate through the shifter, each iteration returns
+    * the next shifted version of the string, until it has returned to the first.
+    *
+    * @return IndexedString which is a shift of input_
+    */
    @Override
    IndexedString next() {
       if (this._iter_position >= this._tokens.size()) {

@@ -6,6 +6,12 @@ package kwic.index;
  */
 public class IndexList extends java.util.TreeSet<kwic.index.IndexedString> {
 
+    /**
+     * Constructor, takes an implementation of Shifter interface
+     * such as a CircularShifter, then this IndexList will build a TreeSet
+     * of all Circular Shifts returned by iterating the shifter
+     * @param cs_
+     */
    public IndexList(Shifter cs_) {
       this._shift = cs_;
    }
