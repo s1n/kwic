@@ -134,6 +134,7 @@ public class MainWindow extends FrameView {
       javax.swing.JMenuItem _exitMenuItem = new javax.swing.JMenuItem();
       javax.swing.JMenu _helpMenu = new javax.swing.JMenu();
       javax.swing.JMenuItem _aboutMenuItem = new javax.swing.JMenuItem();
+      jMenuItem1 = new javax.swing.JMenuItem();
       _statusPanel = new javax.swing.JPanel();
       javax.swing.JSeparator statusPanelSeparator = new javax.swing.JSeparator();
       _statusMessageLabel = new javax.swing.JLabel();
@@ -221,6 +222,15 @@ public class MainWindow extends FrameView {
       _aboutMenuItem.setName("_aboutMenuItem"); // NOI18N
       _helpMenu.add(_aboutMenuItem);
 
+      jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
+      jMenuItem1.setName("jMenuItem1"); // NOI18N
+      jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+         public void actionPerformed(java.awt.event.ActionEvent evt) {
+            jMenuItem1ActionPerformed(evt);
+         }
+      });
+      _helpMenu.add(jMenuItem1);
+
       _menu.add(_helpMenu);
 
       _statusPanel.setName("_statusPanel"); // NOI18N
@@ -280,6 +290,11 @@ public class MainWindow extends FrameView {
       setMenuBar(_menu);
       setStatusBar(_statusPanel);
    }// </editor-fold>//GEN-END:initComponents
+
+   private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+      IndexViewDialog ivd = new IndexViewDialog(null, true);
+      ivd.setVisible(true);
+   }//GEN-LAST:event_jMenuItem1ActionPerformed
 
    @Action
    public Task saveIndex() {
@@ -590,6 +605,7 @@ public class MainWindow extends FrameView {
    private javax.swing.JLabel _statusAnimationLabel;
    private javax.swing.JLabel _statusMessageLabel;
    private javax.swing.JPanel _statusPanel;
+   private javax.swing.JMenuItem jMenuItem1;
    private javax.swing.JPopupMenu.Separator jSeparator1;
    // End of variables declaration//GEN-END:variables
    private final Timer messageTimer;

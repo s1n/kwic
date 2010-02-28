@@ -3,9 +3,7 @@ package kwic.index;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.Collator;
 import java.text.ParseException;
-import java.text.RuleBasedCollator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
