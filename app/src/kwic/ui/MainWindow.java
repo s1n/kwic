@@ -3,33 +3,20 @@
  */
 package kwic.ui;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
-import org.jdesktop.application.Task;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.PrintWriter;
 import javax.swing.DefaultListModel;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
-import kwic.index.CircularShifter;
 import kwic.index.IndexList;
-import kwic.index.InputReader;
-import kwic.index.IndexedString;
 
 /**
  * The application's main frame.
@@ -40,8 +27,6 @@ public class MainWindow extends FrameView {
       super(app);
 
       initComponents();
-      this._inputRecordList.setModel(this._inputModel);
-      this._indexRecordList.setModel(this._indexModel);
 
       // status bar initialization - message timeout, idle icon and busy animation, etc
       ResourceMap resourceMap = getResourceMap();
@@ -121,77 +106,100 @@ public class MainWindow extends FrameView {
    private void initComponents() {
 
       _mainPanel = new javax.swing.JPanel();
-      _kwicSplitPane = new javax.swing.JSplitPane();
-      _inputScrollPane = new javax.swing.JScrollPane();
-      _inputRecordList = new javax.swing.JList();
-      _indexScrollPane = new javax.swing.JScrollPane();
-      _indexRecordList = new javax.swing.JList();
+      jTextField1 = new javax.swing.JTextField();
+      jButton1 = new javax.swing.JButton();
+      jScrollPane1 = new javax.swing.JScrollPane();
+      jTable1 = new javax.swing.JTable();
       _menu = new javax.swing.JMenuBar();
       javax.swing.JMenu _fileMenu = new javax.swing.JMenu();
+      _createMenuItem = new javax.swing.JMenuItem();
       _loadMenuItem = new javax.swing.JMenuItem();
       _saveMenuItem = new javax.swing.JMenuItem();
       jSeparator1 = new javax.swing.JPopupMenu.Separator();
       javax.swing.JMenuItem _exitMenuItem = new javax.swing.JMenuItem();
       javax.swing.JMenu _helpMenu = new javax.swing.JMenu();
       javax.swing.JMenuItem _aboutMenuItem = new javax.swing.JMenuItem();
-      jMenuItem1 = new javax.swing.JMenuItem();
       _statusPanel = new javax.swing.JPanel();
       javax.swing.JSeparator statusPanelSeparator = new javax.swing.JSeparator();
       _statusMessageLabel = new javax.swing.JLabel();
       _statusAnimationLabel = new javax.swing.JLabel();
       _progressBar = new javax.swing.JProgressBar();
-      _indexPopupMenu = new javax.swing.JPopupMenu();
-      _indexRemovePopup = new javax.swing.JMenuItem();
-      _inputPopupMenu = new javax.swing.JPopupMenu();
-      _inputRemovePopup = new javax.swing.JMenuItem();
 
       _mainPanel.setMinimumSize(new java.awt.Dimension(100, 110));
       _mainPanel.setName("_mainPanel"); // NOI18N
       _mainPanel.setPreferredSize(new java.awt.Dimension(939, 500));
 
-      _kwicSplitPane.setDividerLocation(225);
-      _kwicSplitPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-      _kwicSplitPane.setName("_kwicSplitPane"); // NOI18N
+      org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getResourceMap(MainWindow.class);
+      jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
+      jTextField1.setName("jTextField1"); // NOI18N
 
-      _inputScrollPane.setName("_inputScrollPane"); // NOI18N
+      jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+      jButton1.setName("jButton1"); // NOI18N
 
-      _inputRecordList.setComponentPopupMenu(_inputPopupMenu);
-      _inputRecordList.setName("_inputRecordList"); // NOI18N
-      _inputScrollPane.setViewportView(_inputRecordList);
+      jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-      _kwicSplitPane.setLeftComponent(_inputScrollPane);
+      jTable1.setModel(new javax.swing.table.DefaultTableModel(
+         new Object [][] {
 
-      _indexScrollPane.setComponentPopupMenu(_indexPopupMenu);
-      _indexScrollPane.setName("_indexScrollPane"); // NOI18N
+         },
+         new String [] {
+            "Index", "Description", "URL"
+         }
+      ) {
+         Class[] types = new Class [] {
+            java.lang.String.class, java.lang.String.class, java.lang.String.class
+         };
+         boolean[] canEdit = new boolean [] {
+            false, false, false
+         };
 
-      _indexRecordList.setComponentPopupMenu(_indexPopupMenu);
-      _indexRecordList.setName("_indexRecordList"); // NOI18N
-      _indexScrollPane.setViewportView(_indexRecordList);
+         public Class getColumnClass(int columnIndex) {
+            return types [columnIndex];
+         }
 
-      _kwicSplitPane.setRightComponent(_indexScrollPane);
+         public boolean isCellEditable(int rowIndex, int columnIndex) {
+            return canEdit [columnIndex];
+         }
+      });
+      jTable1.setName("jTable1"); // NOI18N
+      jScrollPane1.setViewportView(jTable1);
 
       javax.swing.GroupLayout _mainPanelLayout = new javax.swing.GroupLayout(_mainPanel);
       _mainPanel.setLayout(_mainPanelLayout);
       _mainPanelLayout.setHorizontalGroup(
          _mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, _mainPanelLayout.createSequentialGroup()
+         .addGroup(_mainPanelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(_kwicSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
+            .addGroup(_mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+               .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+               .addGroup(_mainPanelLayout.createSequentialGroup()
+                  .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                  .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                  .addComponent(jButton1)))
             .addContainerGap())
       );
       _mainPanelLayout.setVerticalGroup(
          _mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(_mainPanelLayout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(_kwicSplitPane, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+            .addGroup(_mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+               .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+               .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
             .addContainerGap())
       );
 
       _menu.setName("_menu"); // NOI18N
 
-      org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getResourceMap(MainWindow.class);
       _fileMenu.setText(resourceMap.getString("_fileMenu.text")); // NOI18N
       _fileMenu.setName("_fileMenu"); // NOI18N
+
+      _createMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
+      _createMenuItem.setText(resourceMap.getString("_createMenuItem.text")); // NOI18N
+      _createMenuItem.setToolTipText(resourceMap.getString("_createMenuItem.toolTipText")); // NOI18N
+      _createMenuItem.setName("_createMenuItem"); // NOI18N
+      _fileMenu.add(_createMenuItem);
 
       javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getActionMap(MainWindow.class, this);
       _loadMenuItem.setAction(actionMap.get("loadFile")); // NOI18N
@@ -222,15 +230,6 @@ public class MainWindow extends FrameView {
       _aboutMenuItem.setName("_aboutMenuItem"); // NOI18N
       _helpMenu.add(_aboutMenuItem);
 
-      jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
-      jMenuItem1.setName("jMenuItem1"); // NOI18N
-      jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            jMenuItem1ActionPerformed(evt);
-         }
-      });
-      _helpMenu.add(jMenuItem1);
-
       _menu.add(_helpMenu);
 
       _statusPanel.setName("_statusPanel"); // NOI18N
@@ -248,11 +247,11 @@ public class MainWindow extends FrameView {
       _statusPanel.setLayout(_statusPanelLayout);
       _statusPanelLayout.setHorizontalGroup(
          _statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-         .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 939, Short.MAX_VALUE)
+         .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
          .addGroup(_statusPanelLayout.createSequentialGroup()
             .addContainerGap()
             .addComponent(_statusMessageLabel)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 755, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
             .addComponent(_progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(_statusAnimationLabel)
@@ -270,333 +269,19 @@ public class MainWindow extends FrameView {
             .addGap(3, 3, 3))
       );
 
-      _indexPopupMenu.setName("_indexPopupMenu"); // NOI18N
-
-      _indexRemovePopup.setAction(actionMap.get("removeIndex")); // NOI18N
-      _indexRemovePopup.setText(resourceMap.getString("_indexRemovePopup.text")); // NOI18N
-      _indexRemovePopup.setToolTipText(resourceMap.getString("_indexRemovePopup.toolTipText")); // NOI18N
-      _indexRemovePopup.setName("_indexRemovePopup"); // NOI18N
-      _indexPopupMenu.add(_indexRemovePopup);
-
-      _inputPopupMenu.setName("_inputPopupMenu"); // NOI18N
-
-      _inputRemovePopup.setAction(actionMap.get("removeDataAndIndex")); // NOI18N
-      _inputRemovePopup.setText(resourceMap.getString("_inputRemovePopup.text")); // NOI18N
-      _inputRemovePopup.setToolTipText(resourceMap.getString("_inputRemovePopup.toolTipText")); // NOI18N
-      _inputRemovePopup.setName("_inputRemovePopup"); // NOI18N
-      _inputPopupMenu.add(_inputRemovePopup);
-
       setComponent(_mainPanel);
       setMenuBar(_menu);
       setStatusBar(_statusPanel);
    }// </editor-fold>//GEN-END:initComponents
 
-   private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+   @Action
+   public void loadFile() {
       IndexViewDialog ivd = new IndexViewDialog(null, true);
       ivd.setVisible(true);
-   }//GEN-LAST:event_jMenuItem1ActionPerformed
-
-   @Action
-   public Task saveIndex() {
-      return new SaveIndexTask(getApplication());
-   }
-   //Task to save a file
-   private class SaveIndexTask extends org.jdesktop.application.Task<Object, Void> {
-
-      SaveIndexTask(org.jdesktop.application.Application app) {
-         super(app);
-         System.err.println("Initiating save of indexed data...");
-      }
-
-      @Override
-      protected Object doInBackground() {
-         System.err.println("Saving indexed data to a file...");
-         //check to make sure a file has been loaded
-         if(null == MainWindow.this._index) {
-            return null;
-         }
-         try {
-            //bring up the file dialog to select a file
-            JFileChooser fc = new JFileChooser();
-            int returnVal = fc.showSaveDialog(_mainPanel);
-
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-               _file = fc.getSelectedFile();
-               if (_file.exists()) {
-                  int response = JOptionPane.showConfirmDialog(null,
-                          "Overwrite existing file?",
-                          "Confirm Overwrite",
-                          JOptionPane.OK_CANCEL_OPTION,
-                          JOptionPane.QUESTION_MESSAGE);
-                  if (response == JOptionPane.CANCEL_OPTION) {
-                     return null;
-                  }
-               }
-            } else {
-               return null;
-            }
-            this._pw = new PrintWriter(_file);
-         } catch (FileNotFoundException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-            ex.printStackTrace();
-         }
-
-         //loop over the index and write it out
-         for(IndexedString sin : MainWindow.this._index) {
-            String output = sin.getIndex() + "|" + sin.toString();
-            //System.err.println(output);
-            this._pw.println(output);
-         }
-         this._pw.close();
-         return MainWindow.this._index;
-      }
-
-      @Override
-      protected void succeeded(Object result) {
-         System.err.println("Save completed successfully.");
-      }
-
-      private PrintWriter _pw = null;
-      private File _file = null;
-   }
-
-   @Action
-   public Task loadFile() {
-      return new LoadFileTask(getApplication());
-   }
-   //Task to load a file
-   private class LoadFileTask extends org.jdesktop.application.Task<Object, Void> {
-      LoadFileTask(org.jdesktop.application.Application app) {
-         super(app);
-
-         //bring up the file dialog to select a file
-         JFileChooser fc = new JFileChooser();
-         int returnVal = fc.showOpenDialog(_mainPanel);
-
-         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            _file = fc.getSelectedFile();
-         } else {
-            _file = null;
-         }
-         dlminput = ((DefaultListModel)MainWindow.this._inputRecordList.getModel());
-         dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
-      }
-
-      @Override
-      protected Object doInBackground() {
-         InputReader ir = null;
-         IndexedString si = null;
-         //open the input file for reading
-         try {
-            //clear out everything to start fresh
-            MainWindow.this._index = new IndexList(new CircularShifter());
-            ir = new InputReader(_file.toString());
-            ((DefaultListModel) MainWindow.this._inputRecordList.getModel()).clear();
-            ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).clear();
-         } catch (FileNotFoundException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-         }
-
-         //read in the input, one IndexedString after the next
-         do {
-            try {
-               si = ir.next();
-            } catch (java.util.regex.PatternSyntaxException pse) {
-               //FIXME could mark bad lines and then show them somewhere
-               pse.printStackTrace();
-               continue;
-            }
-            if (si == null) {
-               break;
-            }
-            MainWindow.this._index.add(si);
-            ((DefaultListModel) MainWindow.this._inputRecordList.getModel()).addElement(si);
-         } while (true);
-
-         //update the DataModel for the indexed data
-         for (IndexedString sin : MainWindow.this._index) {
-            System.out.println(sin.toString());
-            ((DefaultListModel) MainWindow.this._indexRecordList.getModel()).addElement(sin.getIndex() + " | " + sin.toString());
-         }
-         try {
-            ir.close();
-         } catch (IOException ex) {
-            Logger.getLogger(MainWindow.class.getName()).log(Level.SEVERE, null, ex);
-         }
-
-         return MainWindow.this._index;
-      }
-
-      @Override
-      protected void succeeded(Object result) {
-         MainWindow.this._inputRecordList.setModel(dlminput);
-         MainWindow.this._indexRecordList.setModel(dlmindex);
-      }
-      private File _file;
-      private DefaultListModel dlmindex = null;
-      private DefaultListModel dlminput = null;
-   }
-
-   @Action
-   public Task removeDataAndIndex() {
-      return new RemoveDataAndIndexTask(getApplication());
-   }
-   //Task to remove an index line
-   private class RemoveDataAndIndexTask extends org.jdesktop.application.Task<Object, Void> {
-
-       /**
-        * Method to remove selected input lines
-        * Removing the input entries will also remove their corresponding indexed records.
-        * The only way to recall an input line is to load the original file again.
-        * Runs on the EDT, this method copies the selected items and
-        * the rest of the logic is performed in doInBackground()
-        * @param app the GUI state for the application using this task
-        */
-      RemoveDataAndIndexTask(org.jdesktop.application.Application app) {
-
-         super(app);
-         //copies the currently selected input lines
-         selection = MainWindow.this._inputRecordList.getSelectedIndices();
-         dlminput = ((DefaultListModel)MainWindow.this._inputRecordList.getModel());
-         dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
-      }
-
-
-      /**
-       * performs the main logic of RemoveDataAndIndexTask
-       * Iterates through the _index for each selection and removes all lines
-       * that have origin index values equal to selection's index
-       * @return _index updated to remove lines
-       */
-      @Override
-      protected Object doInBackground() {
-         //loop over the selections in input, and remove the shifts from the output
-         for(int cand = this.selection.length - 1; cand >= 0; cand--) {
-            int idx = this.selection[cand];
-            String input = dlminput.elementAt(idx).toString();
-            IndexedString rmin = MainWindow.this._index.findInput(input.trim());
-            System.out.println("Removing ====> " + input + " / " + rmin.getIndex());
-            if(rmin != null && MainWindow.this._index.containsInput(rmin)) {
-               //we've identified the inputRecord, let's remove all the indexRecords
-               for(int i = 0; i < MainWindow.this._index.size(); i++) {
-                  String[] tokens = dlmindex.elementAt(i).toString().split(" \\| ");
-                  IndexedString rmidx = MainWindow.this._index.findIndex(tokens[0].trim());
-                  System.out.println("Checking " + rmidx.toString() + " / " + rmidx.getIndex() + " / " + rmidx.originIndex());
-                  
-                  //I think this is the line that prevents a remove if you've removed the indexed lines
-                  if(rmidx != null && rmin.getIndex().equalsIgnoreCase(rmidx.originIndex())) {
-                     //if no more origin index values match rm.getOriginIndex(), remove the input line
-                     System.out.println("Removing " + i + " @ " + rmidx.toString());
-                     MainWindow.this._index.remove(rmidx);
-                     dlmindex.remove(i--);
-                  } else if(rmidx != null && rmin.compareTo(rmidx) == 0) {
-                     System.out.println("Removing origin " + i + " @ " + rmidx.toString());
-                     MainWindow.this._index.remove(rmidx);
-                     dlmindex.remove(i--);
-                  }
-                  //force a GUI update
-                  ((ListSelectionModel)MainWindow.this._indexRecordList.getSelectionModel()).clearSelection();
-                  MainWindow.this._indexRecordList.updateUI();
-               }
-
-               //finally, remove the inputRecord
-               MainWindow.this._index.remove(rmin);
-
-               //find where the rmin is in the DataModel
-               for(int i = 0; i < dlmindex.size() - 1; i++) {
-                  if(dlmindex.elementAt(i).toString().startsWith(rmin.getIndex())) {
-                     dlmindex.remove(i--);
-                     System.out.println("More Removing " + i + " @ " + rmin.toString());
-                  }
-               }
-               
-               //remove it from the input as well
-               dlminput.remove(idx);
-            }
-            System.out.println("Index size: " + MainWindow.this._index.size());
-            //force a GUI update
-            ((ListSelectionModel)MainWindow.this._inputRecordList.getSelectionModel()).clearSelection();
-            MainWindow.this._inputRecordList.updateUI();
-         }
-         return MainWindow.this._index;
-      }
-
-
-      @Override
-      protected void succeeded(Object result) {
-         MainWindow.this._inputRecordList.setModel(dlminput);
-         MainWindow.this._indexRecordList.setModel(dlmindex);
-      }
-      private int[] selection;
-      private DefaultListModel dlmindex = null;
-      private DefaultListModel dlminput = null;
-   }
-
-   @Action
-   public Task removeIndex() {
-      return new RemoveIndexTask(getApplication());
-   }
-   //Task to remove input lines
-   private class RemoveIndexTask extends org.jdesktop.application.Task<Object, Void> {
-
-       /**
-        * Method to remove selected indexed lines
-        * Removing the indexed entries will not remove their corresponding input records or
-        * other indexed records corresponding to the original input record.
-        * The only way to recall an indexed line is to load the original input file again.
-        * Runs on the EDT, this method copies the selected items and
-        * the rest of the logic is performed in doInBackground()
-        * @param app the GUI state for the application using this task
-        */
-      RemoveIndexTask(org.jdesktop.application.Application app) {
-         super(app);
-         selection = MainWindow.this._indexRecordList.getSelectedIndices();
-         dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
-      }
-
-      /**
-       * performs the main logic of RemoveIndexTask
-       * Iterates the selected indexes and removes them from _index
-       * then clears and updates the _indexRecordList from the new _index
-       * @return  _index updated to remove lines
-       */
-      @Override
-      protected Object doInBackground() {
-         DefaultListModel dlmindex = ((DefaultListModel)MainWindow.this._indexRecordList.getModel());
-         for(int cand = this.selection.length - 1; cand >= 0; cand--) {
-            int idx = this.selection[cand];
-            //IndexedString rm = (IndexedString)cand;
-            String[] tokens = dlmindex.elementAt(idx).toString().split(" \\| ");
-            IndexedString rm = new IndexedString(tokens[1].trim(), tokens[0].trim());
-
-            if(MainWindow.this._index.containsIndex(rm)) {
-               MainWindow.this._index.remove(rm);
-               dlmindex.remove(idx);
-            }
-            ((ListSelectionModel) MainWindow.this._indexRecordList.getSelectionModel()).clearSelection();
-            MainWindow.this._indexRecordList.updateUI();
-         }
-
-         return MainWindow.this._index;
-      }
-
-      @Override
-      protected void succeeded(Object result) {
-         MainWindow.this._indexRecordList.setModel(dlmindex);
-      }
-      private int[] selection;
-      private DefaultListModel dlmindex = null;
+      //FIXME pull the index value out from the dialog
    }
    // Variables declaration - do not modify//GEN-BEGIN:variables
-   private javax.swing.JPopupMenu _indexPopupMenu;
-   private javax.swing.JList _indexRecordList;
-   private javax.swing.JMenuItem _indexRemovePopup;
-   private javax.swing.JScrollPane _indexScrollPane;
-   private javax.swing.JPopupMenu _inputPopupMenu;
-   private javax.swing.JList _inputRecordList;
-   private javax.swing.JMenuItem _inputRemovePopup;
-   private javax.swing.JScrollPane _inputScrollPane;
-   private javax.swing.JSplitPane _kwicSplitPane;
+   private javax.swing.JMenuItem _createMenuItem;
    private javax.swing.JMenuItem _loadMenuItem;
    private javax.swing.JPanel _mainPanel;
    private javax.swing.JMenuBar _menu;
@@ -605,8 +290,11 @@ public class MainWindow extends FrameView {
    private javax.swing.JLabel _statusAnimationLabel;
    private javax.swing.JLabel _statusMessageLabel;
    private javax.swing.JPanel _statusPanel;
-   private javax.swing.JMenuItem jMenuItem1;
+   private javax.swing.JButton jButton1;
+   private javax.swing.JScrollPane jScrollPane1;
    private javax.swing.JPopupMenu.Separator jSeparator1;
+   private javax.swing.JTable jTable1;
+   private javax.swing.JTextField jTextField1;
    // End of variables declaration//GEN-END:variables
    private final Timer messageTimer;
    private final Timer busyIconTimer;
