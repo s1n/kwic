@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * IndexViewDialog.java
  *
  * Created on Feb 27, 2010, 6:55:44 PM
@@ -17,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import kwic.index.CircularShifter;
 import kwic.index.IndexList;
 import kwic.index.IndexedString;
@@ -46,44 +40,44 @@ public class IndexViewDialog extends javax.swing.JDialog {
    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
    private void initComponents() {
 
-      jScrollPane1 = new javax.swing.JScrollPane();
-      jTable1 = new javax.swing.JTable();
-      jButton1 = new javax.swing.JButton();
-      jButton2 = new javax.swing.JButton();
-      jScrollPane2 = new javax.swing.JScrollPane();
+      _indexPopupMenu = new javax.swing.JPopupMenu();
+      _indexRemovePopup = new javax.swing.JMenuItem();
+      _inputPopupMenu = new javax.swing.JPopupMenu();
+      _inputRemovePopup = new javax.swing.JMenuItem();
+      _continueButton = new javax.swing.JButton();
+      _loadButton = new javax.swing.JButton();
+      _inputScrollPane = new javax.swing.JScrollPane();
       _inputRecordList = new javax.swing.JTable();
-      jScrollPane3 = new javax.swing.JScrollPane();
+      _indexScrollPane = new javax.swing.JScrollPane();
       _indexRecordList = new javax.swing.JTable();
 
-      jScrollPane1.setName("jScrollPane1"); // NOI18N
+      _indexPopupMenu.setName("_indexPopupMenu"); // NOI18N
 
-      jTable1.setModel(new javax.swing.table.DefaultTableModel(
-         new Object [][] {
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null}
-         },
-         new String [] {
-            "Title 1", "Title 2", "Title 3", "Title 4"
-         }
-      ));
-      jTable1.setName("jTable1"); // NOI18N
-      jScrollPane1.setViewportView(jTable1);
+      javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getActionMap(IndexViewDialog.class, this);
+      _indexRemovePopup.setAction(actionMap.get("removeIndex")); // NOI18N
+      org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getResourceMap(IndexViewDialog.class);
+      _indexRemovePopup.setText(resourceMap.getString("_indexRemovePopup.text")); // NOI18N
+      _indexRemovePopup.setName("_indexRemovePopup"); // NOI18N
+      _indexPopupMenu.add(_indexRemovePopup);
+
+      _inputPopupMenu.setName("_inputPopupMenu"); // NOI18N
+
+      _inputRemovePopup.setAction(actionMap.get("removeInputAndIndex")); // NOI18N
+      _inputRemovePopup.setText(resourceMap.getString("_inputRemovePopup.text")); // NOI18N
+      _inputRemovePopup.setName("_inputRemovePopup"); // NOI18N
+      _inputPopupMenu.add(_inputRemovePopup);
 
       setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
       setName("Form"); // NOI18N
 
-      org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getResourceMap(IndexViewDialog.class);
-      jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-      jButton1.setName("jButton1"); // NOI18N
+      _continueButton.setText(resourceMap.getString("_continueButton.text")); // NOI18N
+      _continueButton.setName("_continueButton"); // NOI18N
 
-      javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getActionMap(IndexViewDialog.class, this);
-      jButton2.setAction(actionMap.get("loadFile")); // NOI18N
-      jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
-      jButton2.setName("jButton2"); // NOI18N
+      _loadButton.setAction(actionMap.get("loadFile")); // NOI18N
+      _loadButton.setText(resourceMap.getString("_loadButton.text")); // NOI18N
+      _loadButton.setName("_loadButton"); // NOI18N
 
-      jScrollPane2.setName("jScrollPane2"); // NOI18N
+      _inputScrollPane.setName("_inputScrollPane"); // NOI18N
 
       _inputRecordList.setModel(new javax.swing.table.DefaultTableModel(
          new Object [][] {
@@ -108,10 +102,11 @@ public class IndexViewDialog extends javax.swing.JDialog {
             return canEdit [columnIndex];
          }
       });
+      _inputRecordList.setComponentPopupMenu(_inputPopupMenu);
       _inputRecordList.setName("_inputRecordList"); // NOI18N
-      jScrollPane2.setViewportView(_inputRecordList);
+      _inputScrollPane.setViewportView(_inputRecordList);
 
-      jScrollPane3.setName("jScrollPane3"); // NOI18N
+      _indexScrollPane.setName("_indexScrollPane"); // NOI18N
 
       _indexRecordList.setModel(new javax.swing.table.DefaultTableModel(
          new Object [][] {
@@ -136,38 +131,36 @@ public class IndexViewDialog extends javax.swing.JDialog {
             return canEdit [columnIndex];
          }
       });
+      _indexRecordList.setComponentPopupMenu(_indexPopupMenu);
       _indexRecordList.setName("_indexRecordList"); // NOI18N
-      jScrollPane3.setViewportView(_indexRecordList);
+      _indexScrollPane.setViewportView(_indexRecordList);
 
       javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
       getContentPane().setLayout(layout);
       layout.setHorizontalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(layout.createSequentialGroup()
+            .addContainerGap()
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                  .addContainerGap(332, Short.MAX_VALUE)
-                  .addComponent(jButton2)
+                  .addComponent(_loadButton)
                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                  .addComponent(jButton1))
-               .addGroup(layout.createSequentialGroup()
-                  .addContainerGap()
-                  .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
-                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE))))
+                  .addComponent(_continueButton))
+               .addComponent(_indexScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE)
+               .addComponent(_inputScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE))
             .addContainerGap())
       );
       layout.setVerticalGroup(
          layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
          .addGroup(layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(_inputScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+            .addComponent(_indexScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-               .addComponent(jButton1)
-               .addComponent(jButton2))
+               .addComponent(_continueButton)
+               .addComponent(_loadButton))
             .addContainerGap())
       );
 
@@ -184,6 +177,7 @@ public class IndexViewDialog extends javax.swing.JDialog {
             IndexViewDialog dialog = new IndexViewDialog(new javax.swing.JFrame(), true);
             dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
+               @Override
                public void windowClosing(java.awt.event.WindowEvent e) {
                   System.exit(0);
                }
@@ -270,16 +264,87 @@ public class IndexViewDialog extends javax.swing.JDialog {
       private DefaultTableModel dlmindex = null;
       private DefaultTableModel dlminput = null;
    }
-   // Variables declaration - do not modify//GEN-BEGIN:variables
-   private javax.swing.JTable _indexRecordList;
-   private javax.swing.JTable _inputRecordList;
-   private javax.swing.JButton jButton1;
-   private javax.swing.JButton jButton2;
-   private javax.swing.JScrollPane jScrollPane1;
-   private javax.swing.JScrollPane jScrollPane2;
-   private javax.swing.JScrollPane jScrollPane3;
-   private javax.swing.JTable jTable1;
-   // End of variables declaration//GEN-END:variables
 
+   @Action
+   public void removeIndex() {
+      int[] selection = IndexViewDialog.this._indexRecordList.getSelectedRows();
+      ;
+      DefaultTableModel dlmindex = ((DefaultTableModel) IndexViewDialog.this._indexRecordList.getModel());
+      for (int cand = selection.length - 1; cand >= 0; cand--) {
+         int idx = selection[cand];
+         String[] tokens = {dlmindex.getValueAt(idx, 0).toString(), dlmindex.getValueAt(idx, 1).toString()};
+         IndexedString rm = new IndexedString(tokens[1].trim(), tokens[0].trim());
+
+         if (IndexViewDialog.this._index.containsIndex(rm)) {
+            IndexViewDialog.this._index.remove(rm);
+            dlmindex.removeRow(idx);
+         }
+         IndexViewDialog.this._indexRecordList.updateUI();
+      }
+   }
+
+   @Action
+   public void removeInputAndIndex() {
+      //copies the currently selected input lines
+      int[] selection = IndexViewDialog.this._inputRecordList.getSelectedRows();
+      DefaultTableModel dlminput = ((DefaultTableModel) IndexViewDialog.this._inputRecordList.getModel());
+      DefaultTableModel dlmindex = ((DefaultTableModel) IndexViewDialog.this._indexRecordList.getModel());
+      //loop over the selections in input, and remove the shifts from the output
+      for (int cand = selection.length - 1; cand >= 0; cand--) {
+         int idx = selection[cand];
+         String input = dlminput.getValueAt(idx, 1).toString();
+         IndexedString rmin = IndexViewDialog.this._index.findInput(input.trim());
+         System.out.println("Removing ====> " + input + " / " + rmin.getIndex());
+         if (rmin != null && IndexViewDialog.this._index.containsInput(rmin)) {
+            //we've identified the inputRecord, let's remove all the indexRecords
+            for (int i = 0; i < IndexViewDialog.this._index.size(); i++) {
+               String[] tokens = {dlmindex.getValueAt(i, 0).toString(), dlmindex.getValueAt(i, 1).toString()};
+               IndexedString rmidx = IndexViewDialog.this._index.findIndex(tokens[0].trim());
+               System.out.println("Checking " + rmidx.toString() + " / " + rmidx.getIndex() + " / " + rmidx.originIndex());
+
+               //I think this is the line that prevents a remove if you've removed the indexed lines
+               if (rmidx != null && rmin.getIndex().equalsIgnoreCase(rmidx.originIndex())) {
+                  //if no more origin index values match rm.getOriginIndex(), remove the input line
+                  System.out.println("Removing " + i + " @ " + rmidx.toString());
+                  IndexViewDialog.this._index.remove(rmidx);
+                  dlmindex.removeRow(i--);
+               } else if (rmidx != null && rmin.compareTo(rmidx) == 0) {
+                  System.out.println("Removing origin " + i + " @ " + rmidx.toString());
+                  IndexViewDialog.this._index.remove(rmidx);
+                  dlmindex.removeRow(i--);
+               }
+            }
+
+            //finally, remove the inputRecord
+            IndexViewDialog.this._index.remove(rmin);
+
+            //find where the rmin is in the DataModel
+            for (int i = 0; i < dlmindex.getRowCount() - 1; i++) {
+               if (dlmindex.getValueAt(i, 0).toString().startsWith(rmin.getIndex())) {
+                  dlmindex.removeRow(i--);
+                  System.out.println("More Removing " + i + " @ " + rmin.toString());
+               }
+            }
+
+            //remove it from the input as well
+            dlminput.removeRow(idx);
+         }
+         System.out.println("Index size: " + IndexViewDialog.this._index.size());
+         //force a GUI update
+         IndexViewDialog.this._inputRecordList.updateUI();
+      }
+   }
+   // Variables declaration - do not modify//GEN-BEGIN:variables
+   private javax.swing.JButton _continueButton;
+   private javax.swing.JPopupMenu _indexPopupMenu;
+   private javax.swing.JTable _indexRecordList;
+   private javax.swing.JMenuItem _indexRemovePopup;
+   private javax.swing.JScrollPane _indexScrollPane;
+   private javax.swing.JPopupMenu _inputPopupMenu;
+   private javax.swing.JTable _inputRecordList;
+   private javax.swing.JMenuItem _inputRemovePopup;
+   private javax.swing.JScrollPane _inputScrollPane;
+   private javax.swing.JButton _loadButton;
+   // End of variables declaration//GEN-END:variables
    private IndexList _index = null;
 }
