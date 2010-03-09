@@ -70,6 +70,7 @@ public class IndexViewDialog extends javax.swing.JDialog {
       setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
       setName("Form"); // NOI18N
 
+      _continueButton.setAction(actionMap.get("continueLoad")); // NOI18N
       _continueButton.setText(resourceMap.getString("_continueButton.text")); // NOI18N
       _continueButton.setName("_continueButton"); // NOI18N
 
@@ -293,13 +294,13 @@ public class IndexViewDialog extends javax.swing.JDialog {
       for (int cand = selection.length - 1; cand >= 0; cand--) {
          int idx = selection[cand];
          String input = dlminput.getValueAt(idx, 1).toString();
-         IndexedString rmin = IndexViewDialog.this._index.findInput(input.trim());
+         IndexedString rmin = IndexViewDialog.this._index.findFirstInputMatch(input.trim());
          System.out.println("Removing ====> " + input + " / " + rmin.getIndex());
          if (rmin != null && IndexViewDialog.this._index.containsInput(rmin)) {
             //we've identified the inputRecord, let's remove all the indexRecords
             for (int i = 0; i < IndexViewDialog.this._index.size(); i++) {
                String[] tokens = {dlmindex.getValueAt(i, 0).toString(), dlmindex.getValueAt(i, 1).toString()};
-               IndexedString rmidx = IndexViewDialog.this._index.findIndex(tokens[0].trim());
+               IndexedString rmidx = IndexViewDialog.this._index.findFirstIndexMatch(tokens[0].trim());
                System.out.println("Checking " + rmidx.toString() + " / " + rmidx.getIndex() + " / " + rmidx.originIndex());
 
                //I think this is the line that prevents a remove if you've removed the indexed lines
@@ -334,6 +335,16 @@ public class IndexViewDialog extends javax.swing.JDialog {
          IndexViewDialog.this._inputRecordList.updateUI();
       }
    }
+
+   public IndexList getIndex() {
+      return this._index;
+   }
+
+   @Action
+   public void continueLoad() {
+      this.setVisible(false);
+   }
+
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.JButton _continueButton;
    private javax.swing.JPopupMenu _indexPopupMenu;
