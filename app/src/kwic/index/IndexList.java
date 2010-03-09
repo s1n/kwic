@@ -34,7 +34,7 @@ public class IndexList extends java.util.TreeSet<kwic.index.IndexedString> {
       return false;
    }
 
-   public IndexedString findIndex(String i) {
+   public IndexedString findFirstIndexMatch(String i) {
       for(IndexedString is : this) {
          if(is.getIndex().equalsIgnoreCase(i)) {
             return is;
@@ -43,13 +43,33 @@ public class IndexList extends java.util.TreeSet<kwic.index.IndexedString> {
       return null;
    }
 
-   public IndexedString findInput(String i) {
+   public java.util.TreeSet<kwic.index.IndexedString> findAnyIndexMatches(String i) {
+      java.util.TreeSet<kwic.index.IndexedString> li = new java.util.TreeSet<kwic.index.IndexedString>();
+      for(IndexedString is : this) {
+         if(is.getIndex().contains(i)) {
+            li.add(is);
+         }
+      }
+      return li;
+   }
+
+   public IndexedString findFirstInputMatch(String i) {
       for(IndexedString is : this) {
          if(is.toString().equals(i)) {
             return is;
          }
       }
       return null;
+   }
+
+   public java.util.TreeSet<kwic.index.IndexedString> findAnyInputMatches(String i) {
+      java.util.TreeSet<kwic.index.IndexedString> li = new java.util.TreeSet<kwic.index.IndexedString>();
+      for(IndexedString is : this) {
+         if(is.toString().contains(i)) {
+            li.add(is);
+         }
+      }
+      return li;
    }
 
    @Override
