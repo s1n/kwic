@@ -10,13 +10,13 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.DefaultListModel;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.ListModel;
+import javax.swing.table.DefaultTableModel;
 import kwic.index.IndexList;
+import kwic.index.IndexedString;
 
 /**
  * The application's main frame.
@@ -106,10 +106,10 @@ public class MainWindow extends FrameView {
    private void initComponents() {
 
       _mainPanel = new javax.swing.JPanel();
-      jTextField1 = new javax.swing.JTextField();
-      jButton1 = new javax.swing.JButton();
-      jScrollPane1 = new javax.swing.JScrollPane();
-      jTable1 = new javax.swing.JTable();
+      _searchFor = new javax.swing.JTextField();
+      _searchButton = new javax.swing.JButton();
+      _searchResultsPane = new javax.swing.JScrollPane();
+      _searchResults = new javax.swing.JTable();
       _menu = new javax.swing.JMenuBar();
       javax.swing.JMenu _fileMenu = new javax.swing.JMenu();
       _createMenuItem = new javax.swing.JMenuItem();
@@ -130,15 +130,17 @@ public class MainWindow extends FrameView {
       _mainPanel.setPreferredSize(new java.awt.Dimension(939, 500));
 
       org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getResourceMap(MainWindow.class);
-      jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
-      jTextField1.setName("jTextField1"); // NOI18N
+      _searchFor.setText(resourceMap.getString("_searchFor.text")); // NOI18N
+      _searchFor.setName("_searchFor"); // NOI18N
 
-      jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-      jButton1.setName("jButton1"); // NOI18N
+      javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getActionMap(MainWindow.class, this);
+      _searchButton.setAction(actionMap.get("searchIndex")); // NOI18N
+      _searchButton.setText(resourceMap.getString("_searchButton.text")); // NOI18N
+      _searchButton.setName("_searchButton"); // NOI18N
 
-      jScrollPane1.setName("jScrollPane1"); // NOI18N
+      _searchResultsPane.setName("_searchResultsPane"); // NOI18N
 
-      jTable1.setModel(new javax.swing.table.DefaultTableModel(
+      _searchResults.setModel(new javax.swing.table.DefaultTableModel(
          new Object [][] {
 
          },
@@ -161,8 +163,8 @@ public class MainWindow extends FrameView {
             return canEdit [columnIndex];
          }
       });
-      jTable1.setName("jTable1"); // NOI18N
-      jScrollPane1.setViewportView(jTable1);
+      _searchResults.setName("_searchResults"); // NOI18N
+      _searchResultsPane.setViewportView(_searchResults);
 
       javax.swing.GroupLayout _mainPanelLayout = new javax.swing.GroupLayout(_mainPanel);
       _mainPanel.setLayout(_mainPanelLayout);
@@ -171,11 +173,11 @@ public class MainWindow extends FrameView {
          .addGroup(_mainPanelLayout.createSequentialGroup()
             .addContainerGap()
             .addGroup(_mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-               .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+               .addComponent(_searchResultsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
                .addGroup(_mainPanelLayout.createSequentialGroup()
-                  .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                  .addComponent(_searchFor, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
                   .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                  .addComponent(jButton1)))
+                  .addComponent(_searchButton)))
             .addContainerGap())
       );
       _mainPanelLayout.setVerticalGroup(
@@ -183,10 +185,10 @@ public class MainWindow extends FrameView {
          .addGroup(_mainPanelLayout.createSequentialGroup()
             .addContainerGap()
             .addGroup(_mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-               .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-               .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+               .addComponent(_searchFor, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+               .addComponent(_searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
+            .addComponent(_searchResultsPane, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
             .addContainerGap())
       );
 
@@ -201,7 +203,6 @@ public class MainWindow extends FrameView {
       _createMenuItem.setName("_createMenuItem"); // NOI18N
       _fileMenu.add(_createMenuItem);
 
-      javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getActionMap(MainWindow.class, this);
       _loadMenuItem.setAction(actionMap.get("loadFile")); // NOI18N
       _loadMenuItem.setText(resourceMap.getString("_loadMenuItem.text")); // NOI18N
       _loadMenuItem.setToolTipText(resourceMap.getString("_loadMenuItem.toolTipText")); // NOI18N
@@ -276,10 +277,23 @@ public class MainWindow extends FrameView {
 
    @Action
    public void loadFile() {
-      IndexViewDialog ivd = new IndexViewDialog(null, true);
+      JFrame mainFrame = Main.getApplication().getMainFrame();
+      IndexViewDialog ivd = new IndexViewDialog(mainFrame, true);
+      ivd.setLocationRelativeTo(mainFrame);
       ivd.setVisible(true);
+      this._index = ivd.getIndex();
       //FIXME pull the index value out from the dialog
    }
+
+   @Action
+   public void searchIndex() {
+      String what = this._searchFor.getText();
+      DefaultTableModel dlmindex = ((DefaultTableModel)this._searchResults.getModel());
+      for(IndexedString is : this._index.findAnyInputMatches(what)) {
+         dlmindex.addRow(new Object[]{is.getIndex(), is.toString()});
+      }
+   }
+
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.JMenuItem _createMenuItem;
    private javax.swing.JMenuItem _loadMenuItem;
@@ -287,14 +301,14 @@ public class MainWindow extends FrameView {
    private javax.swing.JMenuBar _menu;
    private javax.swing.JProgressBar _progressBar;
    private javax.swing.JMenuItem _saveMenuItem;
+   private javax.swing.JButton _searchButton;
+   private javax.swing.JTextField _searchFor;
+   private javax.swing.JTable _searchResults;
+   private javax.swing.JScrollPane _searchResultsPane;
    private javax.swing.JLabel _statusAnimationLabel;
    private javax.swing.JLabel _statusMessageLabel;
    private javax.swing.JPanel _statusPanel;
-   private javax.swing.JButton jButton1;
-   private javax.swing.JScrollPane jScrollPane1;
    private javax.swing.JPopupMenu.Separator jSeparator1;
-   private javax.swing.JTable jTable1;
-   private javax.swing.JTextField jTextField1;
    // End of variables declaration//GEN-END:variables
    private final Timer messageTimer;
    private final Timer busyIconTimer;
@@ -302,7 +316,5 @@ public class MainWindow extends FrameView {
    private final Icon[] busyIcons = new Icon[15];
    private int busyIconIndex = 0;
    private JDialog aboutBox;
-   private ListModel _inputModel = new DefaultListModel();
-   private ListModel _indexModel = new DefaultListModel();
    private IndexList _index = null;
 }
