@@ -132,6 +132,11 @@ public class MainWindow extends FrameView {
       org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getResourceMap(MainWindow.class);
       _searchFor.setText(resourceMap.getString("_searchFor.text")); // NOI18N
       _searchFor.setName("_searchFor"); // NOI18N
+      _searchFor.addKeyListener(new java.awt.event.KeyAdapter() {
+         public void keyPressed(java.awt.event.KeyEvent evt) {
+            _searchForKeyPressed(evt);
+         }
+      });
 
       javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(kwic.ui.Main.class).getContext().getActionMap(MainWindow.class, this);
       _searchButton.setAction(actionMap.get("searchIndex")); // NOI18N
@@ -275,6 +280,12 @@ public class MainWindow extends FrameView {
       setStatusBar(_statusPanel);
    }// </editor-fold>//GEN-END:initComponents
 
+   private void _searchForKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event__searchForKeyPressed
+      if(evt.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER) {
+         searchIndex();
+      }
+   }//GEN-LAST:event__searchForKeyPressed
+
    @Action
    public void loadFile() {
       JFrame mainFrame = Main.getApplication().getMainFrame();
@@ -289,6 +300,7 @@ public class MainWindow extends FrameView {
    public void searchIndex() {
       String what = this._searchFor.getText();
       DefaultTableModel dlmindex = ((DefaultTableModel)this._searchResults.getModel());
+      dlmindex.setRowCount(0);
       for(IndexedString is : this._index.findAnyInputMatches(what)) {
          dlmindex.addRow(new Object[]{is.getIndex(), is.toString()});
       }
