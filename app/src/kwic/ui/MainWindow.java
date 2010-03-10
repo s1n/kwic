@@ -311,7 +311,7 @@ public class MainWindow extends FrameView {
       DefaultTableModel dlmindex = ((DefaultTableModel)this._searchResults.getModel());
       dlmindex.setRowCount(0);
       for(IndexedString is : this._index.search(what)) {
-         dlmindex.addRow(new Object[]{is.getIndex(), is.toString()});
+         dlmindex.addRow(new Object[]{is.getIndex(), is.toString(), is.getURL()});
       }
    }
 

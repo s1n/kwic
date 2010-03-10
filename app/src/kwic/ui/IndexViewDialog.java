@@ -82,17 +82,17 @@ public class IndexViewDialog extends javax.swing.JDialog {
 
       _inputRecordList.setModel(new javax.swing.table.DefaultTableModel(
          new Object [][] {
-            {null, null}
+            {null, null, null}
          },
          new String [] {
-            "Index", "Shifted Input"
+            "Index", "Shifted Input", "URL"
          }
       ) {
          Class[] types = new Class [] {
-            java.lang.String.class, java.lang.String.class
+            java.lang.String.class, java.lang.String.class, java.lang.String.class
          };
          boolean[] canEdit = new boolean [] {
-            false, false
+            false, false, false
          };
 
          public Class getColumnClass(int columnIndex) {
@@ -111,17 +111,17 @@ public class IndexViewDialog extends javax.swing.JDialog {
 
       _indexRecordList.setModel(new javax.swing.table.DefaultTableModel(
          new Object [][] {
-            {null, null}
+            {null, null, null}
          },
          new String [] {
-            "Index", "Shifted Input"
+            "Index", "Shifted Input", "URL"
          }
       ) {
          Class[] types = new Class [] {
-            java.lang.String.class, java.lang.String.class
+            java.lang.String.class, java.lang.String.class, java.lang.String.class
          };
          boolean[] canEdit = new boolean [] {
-            false, false
+            false, false, false
          };
 
          public Class getColumnClass(int columnIndex) {
@@ -223,7 +223,7 @@ public class IndexViewDialog extends javax.swing.JDialog {
             this.dlminput.setRowCount(0);
             this.dlmindex.setRowCount(0);
          } catch (FileNotFoundException ex) {
-            Logger.getLogger(IndexViewDialog.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
          }
 
          //read in the input, one IndexedString after the next
@@ -239,18 +239,18 @@ public class IndexViewDialog extends javax.swing.JDialog {
                break;
             }
             IndexViewDialog.this._index.add(si);
-            this.dlminput.addRow(new Object[]{si.getIndex(), si.toString()});
+            this.dlminput.addRow(new Object[]{si.getIndex(), si.toString(), si.getURL()});
          } while (true);
 
          //update the DataModel for the indexed data
          for (IndexedString sin : IndexViewDialog.this._index) {
             System.out.println(sin.toString());
-            this.dlmindex.addRow(new Object[]{sin.getIndex(), sin.toString()});
+            this.dlmindex.addRow(new Object[]{sin.getIndex(), sin.toString(), sin.getURL()});
          }
          try {
             ir.close();
          } catch (IOException ex) {
-            Logger.getLogger(IndexViewDialog.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
          }
 
          return IndexViewDialog.this._index;
