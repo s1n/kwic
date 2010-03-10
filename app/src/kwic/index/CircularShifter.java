@@ -9,8 +9,10 @@ public class CircularShifter extends Shifter {
    }
 
    public void generatePermutations(IndexedString input_) {
-      this.tokenize(input_.toString());
-      this._iter_position = 0;
+      if(this._tokens == null || this._tokens.size() == 0) {
+         this.tokenize(input_.toString());
+         this._iter_position = 0;
+      }
    }
 
    @Override
@@ -33,6 +35,7 @@ public class CircularShifter extends Shifter {
          this._tokens.add(this._tokens.remove(0));
       }
       IndexedString is = new IndexedString(this._iter_position == 0 ? null : this._origin, join());
+      is.setURL(this._url.toString());
       if(this._iter_position == 0) {
          this._origin = is;
       }
