@@ -310,7 +310,7 @@ public class MainWindow extends FrameView {
       String what = this._searchFor.getText();
       DefaultTableModel dlmindex = ((DefaultTableModel)this._searchResults.getModel());
       dlmindex.setRowCount(0);
-      for(IndexedString is : this._index.findAnyInputMatches(what)) {
+      for(IndexedString is : this._index.search(what)) {
          dlmindex.addRow(new Object[]{is.getIndex(), is.toString()});
       }
    }

@@ -1,5 +1,7 @@
 package kwic.index;
 
+import java.util.TreeSet;
+
 /**
  * Collects all the results by maintaining order to the results. This object
  * can also be iterated over to inspect the indexed results.
@@ -43,10 +45,10 @@ public class IndexList extends java.util.TreeSet<kwic.index.IndexedString> {
       return null;
    }
 
-   public java.util.TreeSet<kwic.index.IndexedString> findAnyIndexMatches(String i) {
-      java.util.TreeSet<kwic.index.IndexedString> li = new java.util.TreeSet<kwic.index.IndexedString>();
+   public TreeSet<IndexedString> findAnyIndexMatches(String i) {
+      TreeSet<IndexedString> li = new TreeSet<IndexedString>();
       for(IndexedString is : this) {
-         if(is.getIndex().contains(i)) {
+         if(is.getIndex().startsWith(i)) {
             li.add(is);
          }
       }
@@ -62,10 +64,25 @@ public class IndexList extends java.util.TreeSet<kwic.index.IndexedString> {
       return null;
    }
 
-   public java.util.TreeSet<kwic.index.IndexedString> findAnyInputMatches(String i) {
-      java.util.TreeSet<kwic.index.IndexedString> li = new java.util.TreeSet<kwic.index.IndexedString>();
+   public java.util.TreeSet<kwic.index.IndexedString> search(String i) {
+      TreeSet<IndexedString> possible = findAnyInputMatches(i);
+      TreeSet<IndexedString> matches = new TreeSet<IndexedString>();
+      for(IndexedString is : possible) {
+         if(is.originIndex() == null) {
+            //it's an original input string
+            matches.add(is);
+         } else {
+            //else it's a shifted input, so let's get the original input
+            matches.add(findFirstIndexMatch(is.originIndex()));
+         }
+      }
+      return matches;
+   }
+
+   public TreeSet<IndexedString> findAnyInputMatches(String i) {
+      TreeSet<IndexedString> li = new TreeSet<IndexedString>();
       for(IndexedString is : this) {
-         if(is.toString().contains(i)) {
+         if(is.toString().startsWith(i)) {
             li.add(is);
          }
       }
