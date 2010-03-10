@@ -92,6 +92,7 @@ public class IndexList extends java.util.TreeSet<kwic.index.IndexedString> {
    @Override
    public boolean add(IndexedString e_) {
       this._shift.clear();
+      this._shift.tokenize(e_);
       this._shift.generatePermutations(e_);
 
       IndexedString is;
