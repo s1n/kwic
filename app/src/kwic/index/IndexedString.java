@@ -4,8 +4,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Shifted input. Keeps track of it's own index and the originating input.
@@ -13,14 +11,12 @@ import java.util.logging.Logger;
 public class IndexedString implements Comparable<IndexedString> {
 
    public IndexedString() {
-      this._index = null;
-      this._input = null;
-      this._digest = null;
    }
 
    public IndexedString(IndexedString pre_) {
       this._origin_digest = pre_._digest;
       this._origin_index = pre_._index;
+      this._url = pre_._url;
    }
 
    @Override
@@ -69,7 +65,7 @@ public class IndexedString implements Comparable<IndexedString> {
          this._digest = MessageDigest.getInstance("SHA-1");
          this._digest.reset();
       } catch (NoSuchAlgorithmException ex) {
-         Logger.getLogger(IndexedString.class.getName()).log(Level.SEVERE, null, ex);
+         ex.printStackTrace();
       }
       this._digest.update(this._input.getBytes());
       return _digest;
@@ -104,6 +100,20 @@ public class IndexedString implements Comparable<IndexedString> {
       return this._origin_index;
    }
 
+   public String getURL() {
+      return this._url;
+   }
+
+   public void setURL(String url_) {
+      this._url = url_;
+      if(this._input.endsWith(url_)) {
+         this._input = this._input.substring(0, this._input.lastIndexOf(url_));
+         //FIXME recompute indices??
+         this._digest = createIndex(this._input);
+         this._index = getIndex();
+      }
+   }
+
    /**
     * Compares two strings alphabetically using the Tertiary collator
     *
@@ -120,21 +130,22 @@ public class IndexedString implements Comparable<IndexedString> {
          }
          return this._collator.compare(this._input, is_.toString());
       } catch (ParseException ex) {
-         Logger.getLogger(IndexedString.class.getName()).log(Level.SEVERE, null, ex);
+         ex.printStackTrace();
       }
       return -1;
    }
 
    public boolean valid() throws java.util.regex.PatternSyntaxException {
-      return this._input.matches("^[A-Za-z ]+$");
+      return this._input.matches("^[A-Za-z ]+\\s+http://[A-Za-z0-9. ]+\\.(com|edu)$");
       //return true;
    }
 
-   private java.lang.String _input;
-   private java.lang.String _index;
-   private java.lang.String _origin_index;
-   private java.security.MessageDigest _digest;
+   private java.lang.String _input = null;
+   private java.lang.String _index = null;
+   private java.lang.String _origin_index = null;
+   private java.security.MessageDigest _digest = null;
    private java.security.MessageDigest _origin_digest;
    private EnglishCollator _collator = null;
+   private java.lang.String _url = null;
 }
  

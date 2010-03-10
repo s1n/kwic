@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.PatternSyntaxException;
 
 /**
@@ -49,7 +47,6 @@ public class InputReader extends LineNumberReader {
             }
          }
       } catch (IOException ex) {
-         Logger.getLogger(InputReader.class.getName()).log(Level.SEVERE, null, ex);
          ex.printStackTrace();
       }
       return ret;
