@@ -29,11 +29,14 @@ public class CircularShifter extends Shifter {
     */
    @Override
    IndexedString next() {
-      if (this._iter_position >= this._tokens.size()) {
-         return null;
-      } else if(this._iter_position != 0) {
-         this._tokens.add(this._tokens.remove(0));
-      }
+      do {
+         if(this._iter_position >= this._tokens.size()) {
+            return null;
+         } else if(this._iter_position != 0) {
+            this._tokens.add(this._tokens.remove(0));
+         }
+      } while(startsWithNoise());
+
       IndexedString is = new IndexedString(this._iter_position == 0 ? null : this._origin, join());
       is.setURL(this._url.toString());
       if(this._iter_position == 0) {

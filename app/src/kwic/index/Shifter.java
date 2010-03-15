@@ -37,6 +37,14 @@ public abstract class Shifter {
       }
       return sb.toString().trim();
    }
+
+   public boolean startsWithNoise() {
+      if (null != this._tokens && 0 < this._tokens.size()) {
+         return EnglishCollator.noise(this._tokens.get(0));
+      }
+      return false;
+   }
+   
    protected ArrayList<String> _tokens;
    protected URL _url = null;
 }
