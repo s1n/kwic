@@ -1,0 +1,30 @@
+Test Process:
+
+Start Kwic program. 
+
+Test About (Click Help -> About) Test that graphic and text appears properly and program does not crash
+
+Test Load Index
+
+ - Load urltest1 
+    -verify text is correctly loaded and shifted, no errors
+    -press continue, try searching for random entries and verify that file is loaded properly
+
+ - Load urltest2
+    -repeat
+
+ - Load urltest3
+    -repeat
+
+
+Test Create Index
+
+  - manually enter text from urltest1, urltest2, and urltest3, and verify they load properly
+
+Test Search
+
+ - for each set loaded, verify search correctly identifies entries
+
+Test Reliability
+
+ - start a new instance, and perform all above tests sequentially without exiting in between
