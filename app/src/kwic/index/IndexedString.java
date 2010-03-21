@@ -136,7 +136,7 @@ public class IndexedString implements Comparable<IndexedString> {
    }
 
    public boolean valid() throws java.util.regex.PatternSyntaxException {
-      return this._input.matches("^[A-Za-z ]+\\s+http://[A-Za-z0-9. ]+\\.(com|edu)$");
+      return this._input.matches("^[A-Za-z ]+\\s+https?\\://[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,3}(/\\S*)?$");
       //return true;
    }
 
