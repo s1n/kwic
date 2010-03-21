@@ -82,7 +82,15 @@ public class IndexList extends java.util.TreeSet<kwic.index.IndexedString> {
    public TreeSet<IndexedString> findAnyInputMatches(String i) {
       TreeSet<IndexedString> li = new TreeSet<IndexedString>();
       for(IndexedString is : this) {
-         if(is.toString().startsWith(i)) {
+         
+         //calculate the max substring length
+         int sublen = i.length();
+         if(is.toString().length() < sublen) {
+            sublen = is.toString().length();
+         }
+
+         //case insensitive substring match
+         if(is.toString().substring(0, sublen).equalsIgnoreCase(i)) {
             li.add(is);
          }
       }
