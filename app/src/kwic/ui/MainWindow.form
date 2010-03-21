@@ -21,7 +21,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="_searchResultsPane" alignment="0" pref="544" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="_searchFor" pref="481" max="32767" attributes="0"/>
+                          <Component id="_searchFor" pref="464" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="_searchButton" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -39,7 +39,7 @@
                       <Component id="_searchButton" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="_searchResultsPane" pref="448" max="32767" attributes="0"/>
+                  <Component id="_searchResultsPane" pref="456" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -114,6 +114,9 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="kwic.ui.MainWindow" id="createFile" methodName="createFile"/>
                 </Property>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+C"/>
+                </Property>
                 <Property name="text" type="java.lang.String" resourceKey="_createMenuItem.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="_createMenuItem.toolTipText"/>
                 <Property name="name" type="java.lang.String" value="_createMenuItem" noResource="true"/>
@@ -172,6 +175,9 @@
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="kwic.ui.uiView" id="showAboutBox" methodName="showAboutBox"/>
+                </Property>
+                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
+                  <KeyStroke key="Ctrl+A"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="_aboutMenuItem" noResource="true"/>
               </Properties>
