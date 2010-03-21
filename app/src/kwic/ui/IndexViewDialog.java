@@ -215,6 +215,11 @@ public class IndexViewDialog extends javax.swing.JDialog {
       protected Object doInBackground() {
          InputReader ir = null;
          IndexedString si = null;
+
+         if(null == this._file) {
+            return null;
+         }
+
          //open the input file for reading
          try {
             //clear out everything to start fresh
