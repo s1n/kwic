@@ -10,6 +10,8 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
@@ -310,12 +312,24 @@ public class MainWindow extends FrameView {
    @Action
    public void searchIndex() {
       String what = this._searchFor.getText();
+
+      StringTokenizer st = new StringTokenizer(what);
       DefaultTableModel dlmindex = ((DefaultTableModel)this._searchResults.getModel());
       dlmindex.setRowCount(0);
-      for(IndexedString is : this._index.search(what)) {
-         dlmindex.addRow(new Object[]{is.getIndex(), is.toString(), is.getURL()});
+      ArrayList<IndexedString> resultsList = new ArrayList<IndexedString>();
+
+      while (st.hasMoreTokens()) {
+         String nextWhat = st.nextToken();
+         
+         for(IndexedString is : this._index.search(nextWhat)) {
+            if(!resultsList.contains(is)){
+                resultsList.add(is);
+                dlmindex.addRow(new Object[]{is.getIndex(), is.toString(), is.getURL()});
+            }
+
+         }
       }
-   }
+    }
 
    // Variables declaration - do not modify//GEN-BEGIN:variables
    private javax.swing.JMenuItem _createMenuItem;
