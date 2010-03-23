@@ -2,29 +2,163 @@ Test Process:
 
 Start Kwic program. 
 
-Test About (Click Help -> About) Test that graphic and text appears properly and program does not crash
+Test 1 About 
+	(Click Help -> About) Test that graphic and text appears properly and program does not crash
 
-Test Load Index
+Test 2 Load Index
 
- - Load urltest1 
+ - Load urltest1 (multi-word search test)
     -verify text is correctly loaded and shifted, no errors
-    -press continue, try searching for random entries and verify that file is loaded properly
+	google search http://www.google.com
+	facebook social networking http://www.facebook.com
+	youtube videos http://www.youtube.com
+	yahoo search http://www.yahoo.com
+	wikipedia online encyclopedia http://www.wikipedia.org
+	twitter social networking http://www.twitter.com
+	freight forwarding service http://www.website.net/freight-forwarding-service
+	cleaning equipment rental wizard http://www.website.net/cleaning-equipment-rental-wizard
+	form clone http://www.website.net/form-clone
+	wordperfection http://www.website.net/wordperfection
+	northwind reader http://www.website.net/northwind-reader
+	payment schedule http://www.website.net/payment-schedule
+	google search http://www.google.com/1
+	google pictures http://www.google.com/2
+	gmail google mail http://www.gmail.com
+	yahoo mail http://www.yahoo.com/mail
+	google video http://www.google.com/4
+	google alerts http://www.google.com/5
+	google directory http://www.google.com/6
+	google docs documents http://www.google.com/7
+	google code http://www.google.com/8
+	google translate http://www.google.com/9
+	google groups http://www.google.com/7
+	google news http://www.news.google.com/news?ned=en
+	google shopping http://www.google.com/11
 
- - Load urltest2
-    -repeat
+	Shifts begin with: alerts google, cleaning equipment, clone form, code google, directory google...
+	
+	Verify that shifts are in alphabetical order.
 
- - Load urltest3
-    -repeat
+    -press continue
+
+    -search "google"
+	verify results 
+	dc98d7cb6656af5cc3675bb4177da921f2b18a5c	gmail google mail	http://www.gmail.com
+	259865e3e7f9ee83ba27785efaa4092ccfca395a	google alerts		http://www.google.com/5
+	7c3a87b8986d50facf85176c7f0e6de4c1f61ab5	google code		http://www.google.com/8
+	1b726dc83ecbf7b4eb6c6e2d4c113c9459608394	google directory	http://www.google.com/6
+	d1c1d66f2efaea1cdb2803b37dd5a315e126d4ba	google docs documents	http://www.google.com/7
+	cbde67dd2c545df8196c064ce54f4999fd43fdb9	google groups		http://www.google.com/7
+	19afcf8c8f6db89974db0cd2df756026705e5ca4	google news		http://www.news.google.com/news?ned=en
+	32d52abbbee078780a2945f5a28f4b0243ee4e8e	google pictures		http://www.google.com/2
+	f28128825b653eff975c12d91a6e59c6ed3b2bce	google search		http://www.google.com
+	a63cd3f789d03475ba3181fc86980c1a08228fb		google shopping		http://www.google.com/11
+	e6efe8f115aff96d86fc4d1c41d85321ba042090	google translate	http://www.google.com/9
+	649f37e54afcb91add926a6a41f9d570fae2702a	google video		http://www.google.com/4
+
+	Verify that shifts are in alphabetical order.
+    
+     -search "search"
+	verify results
+	f28128825b653eff975c12d91a6e59c6ed3b2bce	google search		http://www.google.com
+	abfe70b377f75cf71b058a6d53f2bb0ca0120e6b	yahoo search		http://www.yahoo.com
+    
+    -search "google search"
+	verify results
+	dc98d7cb6656af5cc3675bb4177da921f2b18a5c	gmail google mail	http://www.gmail.com
+	259865e3e7f9ee83ba27785efaa4092ccfca395a	google alerts		http://www.google.com/5
+	7c3a87b8986d50facf85176c7f0e6de4c1f61ab5	google code		http://www.google.com/8
+	1b726dc83ecbf7b4eb6c6e2d4c113c9459608394	google directory	http://www.google.com/6
+	d1c1d66f2efaea1cdb2803b37dd5a315e126d4ba	google docs documents	http://www.google.com/7
+	cbde67dd2c545df8196c064ce54f4999fd43fdb9	google groups		http://www.google.com/7
+	19afcf8c8f6db89974db0cd2df756026705e5ca4	google news		http://www.news.google.com/news?ned=en
+	32d52abbbee078780a2945f5a28f4b0243ee4e8e	google pictures		http://www.google.com/2
+	f28128825b653eff975c12d91a6e59c6ed3b2bce	google search		http://www.google.com
+	a63cd3f789d03475ba3181fc86980c1a08228fb		google shopping		http://www.google.com/11
+	e6efe8f115aff96d86fc4d1c41d85321ba042090	google translate	http://www.google.com/9
+	649f37e54afcb91add926a6a41f9d570fae2702a	google video		http://www.google.com/4
+	abfe70b377f75cf71b058a6d53f2bb0ca0120e6b	yahoo search		http://www.yahoo.com
+   
+    -search "bogus bogus jargon test google search test123 bogus ##$(%*%"
+	verify results are the same as above, for "google search"
 
 
-Test Create Index
+ - Load urltest2 (good format test)
+    -verify results
+	2f6276326635f313032fc76c3bef7ad9e3b5a5a6	google search 			http://www.google.com
+	5bed2a01c8eb29d50655c2059e27586186d97725	facebook social networking 	http://www.facebook.com
+	91ba68889b7b9ed917926d64f101c1d5f3650466	youtube videos 			http://www.youtube.com
+	6f2514c1ba630b6a8aeb95ec11f814e21d642afc	yahoo search 			http://www.yahoo.com
+	ec942ca113fdcd63d5e91126429fd4c752655188	wikipedia online encyclopedia 	http://www.wikipedia.org
+	abf1ad3af4ef3b28864da226015ab12b5cc0df9a	twitter social networking 	http://www.twitter.com
+	98c8e2bc0230a1aa352b314dfd5eb91754a404ca	slashdot news 			http://slashdot.org/
+	d3ddb215f925b7b46fbf90e542018e11db525477	bachelor business administration general business 	https://deekayen.net/bachelor-business-administration-general-business
+	eb1e3ac6beb717dd8d6651728fb22bc7cd04c1ed	computer security 		https://www.deekayen.net/computer-security
+	bccf89fb53fe2b932760d709b687df2c69852477	international travel china 	https://deekayen.net/international-travel-china
+	15946f6886f5df88fce33724a79ad9c8fc19e5da	instructional system design 	https://deekayen.net/instructional-system-design
+	6d694f1b00583ede9666fde1fefc39ffe4504815	analysis phase 			https://deekayen.net/analysis-phase
+	2c9d965d89acbf3e68218e9a92963287134ac947	management telecommunication 	https://www.deekayen.net/management-telecommunication
+	ce8a91672949ec018d6511cd3655f135908b7040	master science management information systems 	https://deekayen.net/master-science-management-information-systems
+	e800ac1548b4e261d96a4265eaba4d37e88e5197	doctor philosophy education 	https://deekayen.net/doctor-philosophy-education
+	848c52a2c4dbdac4720ecebbfd8d27abd8048799	temperature conversion 		http://www.website.net/temperature-conversion
+	cd4d7f82c0650195cad3212750a4fe53ced260ab	freight forwarding service 	https://website.net/freight-forwarding-service
+	bbec63588e1b68f39fdb0534dd2f1399df2300c3	cleaning equipment rental wizard 	https://website.net/cleaning-equipment-rental-wizard
+	fbb08adc67cc1ce1ba53958f9dc4b09ea75cca8b	form clone 			http://website.net/form-clone
+	43e0b1ec6350125dd7c381cba7ca58753e95e573	wordperfection 			https://website.net/wordperfection
+	ad58402ed04846849cbde72b392bd2f22a5f63ba	northwind reader 		https://website.net/northwind-reader
+	303a523e53b874e3c592c36e68a45393470e9417	payment schedule 		https://www.website.net/payment-schedule
 
-  - manually enter text from urltest1, urltest2, and urltest3, and verify they load properly
+	Verify that shifts are in alphabetical order.
 
-Test Search
+ - Load urltest3 (bad format test)
+    -verify that bogus lines are ignored, that program does not crash
+    -output should be identical to that of urltest2, 
+    -lines 4 and 5 and the last 4 should all throw exceptions and fail, the rest should be fine
+    -expected fail lines: 
+	this line has no url
 
- - for each set loaded, verify search correctly identifies entries
+	bogus line
 
-Test Reliability
+	test http://http://
+	test http:www.www.http.com
 
- - start a new instance, and perform all above tests sequentially without exiting in between
+ - Load urltest4 (noise word reduction test)
+    -verify there are no "a", "an", "the", "and", "or", "of", "to", "be", "is", "in", "out", "by", "as", "at", "off" noise words
+    -output should be identical to that of urltest1 for all search fields
+
+
+Test 3 Create Index
+
+  - copy below text:
+	google search http://www.google.com
+	facebook social networking http://www.facebook.com
+	youtube videos http://www.youtube.com
+	yahoo search http://www.yahoo.com
+	wikipedia online encyclopedia http://www.wikipedia.org
+	twitter social networking http://www.twitter.com
+	freight forwarding service http://www.website.net/freight-forwarding-service
+	cleaning equipment rental wizard http://www.website.net/cleaning-equipment-rental-wizard
+	form clone http://www.website.net/form-clone
+	wordperfection http://www.website.net/wordperfection
+	northwind reader http://www.website.net/northwind-reader
+	payment schedule http://www.website.net/payment-schedule
+	google search http://www.google.com/1
+	google pictures http://www.google.com/2
+	gmail google mail http://www.gmail.com
+	yahoo mail http://www.yahoo.com/mail
+	google video http://www.google.com/4
+	google alerts http://www.google.com/5
+	google directory http://www.google.com/6
+	google docs documents http://www.google.com/7
+	google code http://www.google.com/8
+	google translate http://www.google.com/9
+	google groups http://www.google.com/7
+	google news http://www.news.google.com/news?ned=en
+	google shopping http://www.google.com/11
+
+  - paste into Create Index window and press continue
+
+  - perform same tests as with urltest1 having used Create Index
+
+  - manually enter text from urltest2, urltest3, and urltest4 and follow same procedure.
+
