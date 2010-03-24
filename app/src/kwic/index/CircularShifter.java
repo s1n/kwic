@@ -32,6 +32,8 @@ public class CircularShifter extends Shifter {
       do {
          if(this._iter_position >= this._tokens.size()) {
             return null;
+         } else if(this._iter_position == 0 && !startsWithNoise()) {
+            break;
          } else if(this._iter_position >= 0) {
             this._tokens.add(this._tokens.remove(0));
          }
