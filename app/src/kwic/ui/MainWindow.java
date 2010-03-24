@@ -116,7 +116,6 @@ public class MainWindow extends FrameView {
       javax.swing.JMenu _fileMenu = new javax.swing.JMenu();
       _createMenuItem = new javax.swing.JMenuItem();
       _loadMenuItem = new javax.swing.JMenuItem();
-      _saveMenuItem = new javax.swing.JMenuItem();
       jSeparator1 = new javax.swing.JPopupMenu.Separator();
       javax.swing.JMenuItem _exitMenuItem = new javax.swing.JMenuItem();
       javax.swing.JMenu _helpMenu = new javax.swing.JMenu();
@@ -205,7 +204,6 @@ public class MainWindow extends FrameView {
       _fileMenu.setName("_fileMenu"); // NOI18N
 
       _createMenuItem.setAction(actionMap.get("createFile")); // NOI18N
-      _createMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.event.InputEvent.CTRL_MASK));
       _createMenuItem.setText(resourceMap.getString("_createMenuItem.text")); // NOI18N
       _createMenuItem.setToolTipText(resourceMap.getString("_createMenuItem.toolTipText")); // NOI18N
       _createMenuItem.setName("_createMenuItem"); // NOI18N
@@ -216,12 +214,6 @@ public class MainWindow extends FrameView {
       _loadMenuItem.setToolTipText(resourceMap.getString("_loadMenuItem.toolTipText")); // NOI18N
       _loadMenuItem.setName("_loadMenuItem"); // NOI18N
       _fileMenu.add(_loadMenuItem);
-
-      _saveMenuItem.setAction(actionMap.get("saveIndex")); // NOI18N
-      _saveMenuItem.setText(resourceMap.getString("_saveMenuItem.text")); // NOI18N
-      _saveMenuItem.setToolTipText(resourceMap.getString("_saveMenuItem.toolTipText")); // NOI18N
-      _saveMenuItem.setName("_saveMenuItem"); // NOI18N
-      _fileMenu.add(_saveMenuItem);
 
       jSeparator1.setName("jSeparator1"); // NOI18N
       _fileMenu.add(jSeparator1);
@@ -236,7 +228,6 @@ public class MainWindow extends FrameView {
       _helpMenu.setName("_helpMenu"); // NOI18N
 
       _aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
-      _aboutMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
       _aboutMenuItem.setName("_aboutMenuItem"); // NOI18N
       _helpMenu.add(_aboutMenuItem);
 
@@ -337,7 +328,6 @@ public class MainWindow extends FrameView {
    private javax.swing.JPanel _mainPanel;
    private javax.swing.JMenuBar _menu;
    private javax.swing.JProgressBar _progressBar;
-   private javax.swing.JMenuItem _saveMenuItem;
    private javax.swing.JButton _searchButton;
    private javax.swing.JTextField _searchFor;
    private javax.swing.JTable _searchResults;

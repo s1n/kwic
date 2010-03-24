@@ -114,9 +114,6 @@
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="kwic.ui.MainWindow" id="createFile" methodName="createFile"/>
                 </Property>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+C"/>
-                </Property>
                 <Property name="text" type="java.lang.String" resourceKey="_createMenuItem.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="_createMenuItem.toolTipText"/>
                 <Property name="name" type="java.lang.String" value="_createMenuItem" noResource="true"/>
@@ -130,16 +127,6 @@
                 <Property name="text" type="java.lang.String" resourceKey="_loadMenuItem.text"/>
                 <Property name="toolTipText" type="java.lang.String" resourceKey="_loadMenuItem.toolTipText"/>
                 <Property name="name" type="java.lang.String" value="_loadMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="_saveMenuItem">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="kwic.ui.uiView" id="saveIndex" methodName="saveIndex"/>
-                </Property>
-                <Property name="text" type="java.lang.String" resourceKey="_saveMenuItem.text"/>
-                <Property name="toolTipText" type="java.lang.String" resourceKey="_saveMenuItem.toolTipText"/>
-                <Property name="name" type="java.lang.String" value="_saveMenuItem" noResource="true"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
@@ -175,9 +162,6 @@
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
                   <action class="kwic.ui.uiView" id="showAboutBox" methodName="showAboutBox"/>
-                </Property>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+A"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="_aboutMenuItem" noResource="true"/>
               </Properties>
