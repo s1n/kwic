@@ -4,12 +4,18 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
-import javax.ejb.EJB;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+//import javax.ejb.EJB;
 
 /**
  * Shifted input. Keeps track of it's own index and the originating input.
  */
-@EJB
+//@EJB
+@Entity
+//@NamedQuery(name = "findAllIndices", query = "SELECT * from IndexString")
 public class IndexedString implements Comparable<IndexedString> {
 
    public IndexedString() {
@@ -154,12 +160,20 @@ public class IndexedString implements Comparable<IndexedString> {
       //return true;
    }
 
+   @Column(name = "description")
    private java.lang.String _input = null;
+   @Id
+   @Column(name = "index")
    private java.lang.String _index = null;
+   @Transient
    private java.lang.String _origin_index = null;
+   @Transient
    private java.security.MessageDigest _digest = null;
+   @Transient
    private java.security.MessageDigest _origin_digest;
+   @Transient
    private EnglishCollator _collator = null;
+   @Column(name = "url")
    private java.lang.String _url = null;
 }
  
