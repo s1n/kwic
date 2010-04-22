@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package kwic.frontend;
 
 import java.util.List;
@@ -16,9 +11,8 @@ import kwic.backend.IndexedString;
 
 /**
  *
- * @author s1n
  */
-@Stateless
+@Stateless(mappedName="web/IndexedString/remote")
 public class IndexedStringFacade implements IndexedStringFacadeRemote {
     @PersistenceContext(unitName = "webPU")
     private EntityManager em;
