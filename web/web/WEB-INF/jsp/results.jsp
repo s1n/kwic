@@ -5,9 +5,10 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Hello</title>
+        <title>KWIC Search Engine Results</title>
     </head>
     <body>
-        <h2>${result}</h2>
+        <h2>Results:</h2><br/>
+        ${result}
     </body>
 </html>
