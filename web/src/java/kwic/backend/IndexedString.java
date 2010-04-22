@@ -1,5 +1,6 @@
 package kwic.backend;
 
+import java.io.Serializable;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -8,32 +9,27 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-//import javax.ejb.EJB;
 
 /**
  * Shifted input. Keeps track of it's own index and the originating input.
  */
-//@EJB
 @Entity
-//@NamedQuery(name = "findAllIndices", query = "SELECT * from IndexString")
-public class IndexedString implements Comparable<IndexedString> {
+public class IndexedString implements Comparable<IndexedString>, Serializable {
 
    public IndexedString() {
+      //System.err.println("Default constructor");
    }
 
    public IndexedString(IndexedString pre_) {
+      //System.err.println("Copy constructor");
       this._origin_digest = pre_._digest;
       this._origin_index = pre_._index;
       this._url = pre_._url;
    }
 
-   @Override
-   public boolean equals(Object obj) {
-      return this._input.equals(obj.toString());
-   }
-
    public IndexedString(IndexedString pre_, String input_) {
-      if (pre_ != null) {
+      //System.err.println("Shifted constructor");
+      if(pre_ != null) {
          this._origin_digest = pre_._digest;
          this._origin_index = pre_._index;
       }
@@ -48,6 +44,7 @@ public class IndexedString implements Comparable<IndexedString> {
     * @param input_ a String to be encapsulated in the IndexedString
     */
    public IndexedString(String input_) {
+      //System.err.println("Input only constructor");
       this._input = input_;
       this._digest = createIndex(input_);
       this._index = getIndex();
@@ -57,9 +54,15 @@ public class IndexedString implements Comparable<IndexedString> {
 
    //use with care, digests are unset
    public IndexedString(String input_, String index_) {
+      //System.err.println("Dangerous input+index constructor");
       this._input = input_;
       this._index = index_;
       this._origin_index = this._index;
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      return this._input.equals(obj.toString());
    }
 
    /**
@@ -72,7 +75,7 @@ public class IndexedString implements Comparable<IndexedString> {
          //compute the index from a SHA-1
          this._digest = MessageDigest.getInstance("SHA-1");
          this._digest.reset();
-      } catch (NoSuchAlgorithmException ex) {
+      } catch(NoSuchAlgorithmException ex) {
          ex.printStackTrace();
       }
       this._digest.update(this._input.getBytes());
@@ -85,12 +88,17 @@ public class IndexedString implements Comparable<IndexedString> {
     */
    public String getIndex() {
       //recompute the index
-      if (this._index == null || this._index.length() <= 0) {
+      if(this._index == null || this._index.length() <= 0) {
          this._index = (new BigInteger(1, this._digest.digest())).toString(16);
       }
       return this._index;
    }
 
+   //public void print() {
+   //   System.err.println("input = " + this._input);
+   //   System.err.println("index = " + this._index);
+   //   System.err.println("url = " + this._url);
+   //}
    /**
     * Returns the original input string
     * @return input the string the IndexedString was constructed with
@@ -101,10 +109,11 @@ public class IndexedString implements Comparable<IndexedString> {
    }
 
    public String getInput() {
-       return this.toString();
+      return this.toString();
    }
 
    public void setInput(String in_) {
+      //System.err.println("setInput = " + in_);
       this._input = in_;
       this._digest = createIndex(in_);
       this._index = getIndex();
@@ -149,7 +158,7 @@ public class IndexedString implements Comparable<IndexedString> {
             this._collator = new EnglishCollator();
          }
          return this._collator.compare(this._input, is_.toString());
-      } catch (ParseException ex) {
+      } catch(ParseException ex) {
          ex.printStackTrace();
       }
       return -1;
@@ -159,7 +168,6 @@ public class IndexedString implements Comparable<IndexedString> {
       return this._input.matches("^[A-Za-z ]+\\s+https?\\://[a-zA-Z0-9\\-\\.]+\\.[a-zA-Z]{2,3}(/\\S*)?$");
       //return true;
    }
-
    @Column(name = "description")
    private java.lang.String _input = null;
    @Id
