@@ -8,12 +8,12 @@ import java.util.TreeSet;
  */
 public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
 
-    /**
-     * Constructor, takes an implementation of Shifter interface
-     * such as a CircularShifter, then this IndexList will build a TreeSet
-     * of all Circular Shifts returned by iterating the shifter
-     * @param cs_
-     */
+   /**
+    * Constructor, takes an implementation of Shifter interface
+    * such as a CircularShifter, then this IndexList will build a TreeSet
+    * of all Circular Shifts returned by iterating the shifter
+    * @param cs_
+    */
    public IndexList(Shifter cs_) {
       this._shift = cs_;
    }
@@ -82,7 +82,7 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
    public TreeSet<IndexedString> findAnyInputMatches(String i) {
       TreeSet<IndexedString> li = new TreeSet<IndexedString>();
       for(IndexedString is : this) {
-         
+
          //calculate the max substring length
          int sublen = i.length();
          if(is.toString().length() < sublen) {
@@ -100,11 +100,12 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
    @Override
    public boolean add(IndexedString e_) {
       this._shift.clear();
+      //e_.print();
       this._shift.tokenize(e_);
       this._shift.generatePermutations(e_);
 
       IndexedString is;
-      while ((is = this._shift.next()) != null) {
+      while((is = this._shift.next()) != null) {
          super.add(is);
       }
       return true;
