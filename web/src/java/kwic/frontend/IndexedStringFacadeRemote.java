@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package kwic.frontend;
 
 import java.util.List;
@@ -11,7 +6,6 @@ import kwic.backend.IndexedString;
 
 /**
  *
- * @author s1n
  */
 @Remote
 public interface IndexedStringFacadeRemote {
