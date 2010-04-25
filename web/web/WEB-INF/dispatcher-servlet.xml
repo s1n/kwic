@@ -19,6 +19,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="mappings">
             <props>
                 <prop key="index.htm">indexController</prop>
+                <prop key="admin.htm">adminController</prop>
             </props>
         </property>
     </bean>
