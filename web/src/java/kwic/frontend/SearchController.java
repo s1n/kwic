@@ -26,6 +26,8 @@ public class SearchController extends SimpleFormController {
         IndexedString idx = (IndexedString)command;
         ModelAndView mv = new ModelAndView(getSuccessView());
         mv.addObject("result", getSearchService().search(idx.getInput()));
+        mv.addObject("whatfor", idx.getInput());
+        mv.addObject("resultcount", getSearchService().totalFound(idx.getInput()));
         return mv;
     }
 

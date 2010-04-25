@@ -8,7 +8,15 @@
         <title>KWIC Search Engine Results</title>
     </head>
     <body>
-        <h2>Results:</h2><br/>
-        ${result}
+       <div id="whatfor">
+           Search results for: ${whatfor}
+        </div>
+       <div id="resultcount">
+           Found ${resultcount} links
+        </div>
+        <div id="resultlist">
+           Results:<br/>
+           ${result}
+        </div>
     </body>
 </html>

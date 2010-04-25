@@ -17,7 +17,6 @@ public class SearchService {
       try {
          _indexEJB = (IndexedStringFacadeRemote)new InitialContext().lookup("web/IndexedString/remote");
          List<IndexedString> stuff = _indexEJB.findAll();
-         //System.err.println("size = " + stuff.size());
          if(stuff.size() > 0) {
             for(IndexedString is : stuff) {
                _index.add(is);
@@ -49,10 +48,14 @@ public class SearchService {
       for(IndexedString is : results) {
          sb.append("<li><a href=\"" + is.getURL() + "\">" + is.toString() + "</a><br/>");
       }
-      sb.append("</ul><br/><br/>");
-      sb.append("Total results found: " + results.size());
+      sb.append("</ul>");
       return sb.toString();
    }
+
+   public String totalFound(String for_) {
+      return String.valueOf(_index.search(for_).size());
+   }
+
    private IndexList _index;
    @EJB
    private static IndexedStringFacadeRemote _indexEJB;
