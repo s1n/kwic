@@ -28,7 +28,7 @@ public class CircularShifter extends Shifter {
     * @return IndexedString which is a shift of input_
     */
    @Override
-   IndexedString next() {
+   public IndexedString next() {
       do {
          if(this._iter_position >= this._tokens.size()) {
             return null;

@@ -35,4 +35,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
           class="org.springframework.web.servlet.mvc.ParameterizableViewController"
           p:viewName="index" />
     <bean class="kwic.frontend.SearchController" p:searchService-ref="searchService"/>
+    <bean name="adminController"
+          class="org.springframework.web.servlet.mvc.ParameterizableViewController"
+          p:viewName="admin" />
+    <bean class="kwic.frontend.AdminController" p:searchService-ref="searchService"/>
 </beans>

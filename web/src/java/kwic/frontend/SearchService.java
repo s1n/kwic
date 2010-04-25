@@ -56,6 +56,18 @@ public class SearchService {
       return String.valueOf(_index.search(for_).size());
    }
 
+   public String generateShifts(IndexedString for_) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("<ul>");
+      CircularShifter cs = new CircularShifter();
+      cs.generatePermutations(for_);
+      IndexedString temp = cs.next();
+      while(!temp.toString().isEmpty()) {
+         sb.append("<li>" + temp.toString() + "</li>");
+      }
+      return sb.toString();
+   }
+
    private IndexList _index;
    @EJB
    private static IndexedStringFacadeRemote _indexEJB;
