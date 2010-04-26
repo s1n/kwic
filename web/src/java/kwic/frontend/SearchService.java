@@ -19,6 +19,7 @@ public class SearchService {
          List<IndexedString> stuff = _indexEJB.findAll();
          if(stuff.size() > 0) {
             for(IndexedString is : stuff) {
+               System.err.println("Restoring: " + is.toString());
                _index.add(is);
             }
          } else {
@@ -59,14 +60,11 @@ public class SearchService {
    public String generateShifts(IndexedString for_) {
       StringBuilder sb = new StringBuilder();
       sb.append("<ul>");
-      CircularShifter cs = new CircularShifter();
-      System.err.println(for_.toString());
-      cs.generatePermutations(for_);
-      IndexedString temp = cs.next();
-      while(temp != null && !temp.toString().isEmpty()) {
-         sb.append("<li>" + temp.toString() + "</li>");
-         for_.setURL(temp.getURL());
-         temp = cs.next();
+      IndexList il = new IndexList(new CircularShifter());
+      il.add(for_);
+      for(IndexedString is : il) {
+         sb.append("<li>" + is.toString() + "</li>");
+         for_.setURL(is.getURL());
       }
 
       //make sure this new entry goes to the database!
