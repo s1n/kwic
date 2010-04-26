@@ -23,6 +23,7 @@ public class CircularShifter extends Shifter {
       this._origin = null;
       this._iter_position = 0;
       this._iter_max = 0;
+      this._tokens = null;
    }
 
    /**
@@ -34,6 +35,7 @@ public class CircularShifter extends Shifter {
    @Override
    public IndexedString next() {
       do {
+         System.out.println("at " + this._iter_position + " to " + this._iter_max);
          if(this._iter_position >= this._iter_max) {
             return null;
          } else if(this._iter_position == 0 && !startsWithNoise()) {
@@ -55,7 +57,6 @@ public class CircularShifter extends Shifter {
       this._iter_position++;
       return is;
    }
-   private Iterator<String> _betteriter;
    private int _iter_position = 0;
    private int _iter_max = 0;
    private IndexedString _origin = null;

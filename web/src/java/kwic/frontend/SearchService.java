@@ -40,6 +40,9 @@ public class SearchService {
       } catch(Exception e) {
          //drop it like it's hot
       }
+      for(IndexedString is : _index) {
+         System.err.println("index data: " + is.toString());
+      }
    }
 
    public String search(String for_) {
@@ -47,6 +50,11 @@ public class SearchService {
       sb.append("<ul>");
       java.util.TreeSet<kwic.backend.IndexedString> results = _index.search(for_);
       for(IndexedString is : results) {
+         sb.append("<li><a href=\"" + is.getURL() + "\">" + is.toString() + "</a><br/>");
+      }
+      sb.append("</ul>");
+      sb.append("Index: <br/><br/>");
+      for(IndexedString is : _index) {
          sb.append("<li><a href=\"" + is.getURL() + "\">" + is.toString() + "</a><br/>");
       }
       sb.append("</ul>");
@@ -68,7 +76,7 @@ public class SearchService {
       }
 
       //make sure this new entry goes to the database!
-      this._indexEJB.create(for_);
+      _indexEJB.create(for_);
       return sb.toString();
    }
 

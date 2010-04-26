@@ -89,6 +89,8 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
             sublen = is.toString().length();
          }
 
+         System.err.println("Checking if " + is.toString() + " ~~ " + i);
+
          //case insensitive substring match
          if(is.toString().substring(0, sublen).equals(i)) {
             li.add(is);
@@ -106,6 +108,7 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
 
       IndexedString is;
       while((is = this._shift.next()) != null) {
+         System.err.println("Shift: " + is.toString());
          super.add(is);
       }
       return true;
