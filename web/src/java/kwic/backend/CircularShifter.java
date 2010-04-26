@@ -35,7 +35,7 @@ public class CircularShifter extends Shifter {
    @Override
    public IndexedString next() {
       do {
-         System.out.println("at " + this._iter_position + " to " + this._iter_max);
+         //System.out.println("at " + this._iter_position + " to " + this._iter_max);
          if(this._iter_position >= this._iter_max) {
             return null;
          } else if(this._iter_position == 0 && !startsWithNoise()) {
