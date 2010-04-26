@@ -75,11 +75,11 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
       for(IndexedString is : possible) {
          if(is.originIndex() == null) {
             //it's an original input string
-            System.err.println("Origin input string: " + is.toString());
+            //System.err.println("Origin input string: " + is.toString());
             matches.add(is);
          } else {
             //else it's a shifted input, so let's get the original input
-            System.err.println("Shifted input string: " + is.toString());
+            //System.err.println("Shifted input string: " + is.toString());
             matches.add(findFirstIndexMatch(is.originIndex()));
          }
       }
@@ -89,13 +89,14 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
    public TreeSet<IndexedString> findAnyInputMatches(String i) {
       TreeSet<IndexedString> li = new TreeSet<IndexedString>();
       for(IndexedString is : this) {
-         if(is.originIndex() == null) {
+         if(is.originIndex() != null) {
             continue;
          }
          boolean containsalltokens = true;
          StringTokenizer st = new StringTokenizer(i);
          while(st.hasMoreTokens()) {
             String next = st.nextToken();
+            //System.err.println(is.toString() + " contains " + next);
             containsalltokens &= is.toString().contains(next);
          }
          if(containsalltokens) {
