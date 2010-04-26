@@ -17,18 +17,15 @@ import javax.persistence.Transient;
 public class IndexedString implements Comparable<IndexedString>, Serializable {
 
    public IndexedString() {
-      //System.err.println("Default constructor");
    }
 
    public IndexedString(IndexedString pre_) {
-      //System.err.println("Copy constructor");
       this._origin_digest = pre_._digest;
       this._origin_index = pre_._index;
       this._url = pre_._url;
    }
 
    public IndexedString(IndexedString pre_, String input_) {
-      //System.err.println("Shifted constructor");
       if(pre_ != null) {
          this._origin_digest = pre_._digest;
          this._origin_index = pre_._index;
@@ -44,7 +41,6 @@ public class IndexedString implements Comparable<IndexedString>, Serializable {
     * @param input_ a String to be encapsulated in the IndexedString
     */
    public IndexedString(String input_) {
-      //System.err.println("Input only constructor");
       this._input = input_;
       this._digest = createIndex(input_);
       this._index = getIndex();
@@ -54,7 +50,6 @@ public class IndexedString implements Comparable<IndexedString>, Serializable {
 
    //use with care, digests are unset
    public IndexedString(String input_, String index_) {
-      //System.err.println("Dangerous input+index constructor");
       this._input = input_;
       this._index = index_;
       this._origin_index = this._index;
@@ -94,11 +89,6 @@ public class IndexedString implements Comparable<IndexedString>, Serializable {
       return this._index;
    }
 
-   //public void print() {
-   //   System.err.println("input = " + this._input);
-   //   System.err.println("index = " + this._index);
-   //   System.err.println("url = " + this._url);
-   //}
    /**
     * Returns the original input string
     * @return input the string the IndexedString was constructed with
@@ -113,7 +103,6 @@ public class IndexedString implements Comparable<IndexedString>, Serializable {
    }
 
    public void setInput(String in_) {
-      //System.err.println("setInput = " + in_);
       this._input = in_;
       this._digest = createIndex(in_);
       this._index = getIndex();
@@ -137,7 +126,6 @@ public class IndexedString implements Comparable<IndexedString>, Serializable {
       this._url = url_;
       if(this._input.endsWith(url_)) {
          this._input = this._input.substring(0, this._input.lastIndexOf(url_));
-         //FIXME recompute indices??
          this._digest = createIndex(this._input);
          this._index = getIndex();
       }

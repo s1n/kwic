@@ -1,7 +1,5 @@
 package kwic.backend;
 
-import java.util.Iterator;
-
 /**
  * Class to perform circular shifting of input tokens.
  */

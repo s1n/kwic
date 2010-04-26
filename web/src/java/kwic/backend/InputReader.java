@@ -31,7 +31,9 @@ public class InputReader extends LineNumberReader {
    }
 
    /**
-    * Iterator for the InputReader, returns line by line until it reads null
+    * Iterator for the InputReader, returns line by line until it reads null.
+    * Validation is not performed on the input, as it may be the version of input
+    * that does not have a URL on the end.
     * @return IndexedString containing the next line of the file
     * @throws java.util.regex.PatternSyntaxException
     */

@@ -2,9 +2,6 @@ package kwic.frontend;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
-import java.lang.String;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.naming.InitialContext;
@@ -28,20 +25,6 @@ public class SearchService {
                System.err.println("Restoring: " + is.toString());
                _index.add(is);
             }
-         } else {
-            //IndexedString parent = null;
-            //IndexedString is = new IndexedString(parent, "dark side http://foo.com");
-            //_index.add(is);
-            //_indexEJB.create(is);
-            //is = new IndexedString(parent, "yeah yeah yeahs http://yeahs.com");
-            //_index.add(is);
-            //_indexEJB.create(is);
-            //is = new IndexedString(parent, "this project is time consuming http://timewasters.com");
-            //_index.add(is);
-            //_indexEJB.create(is);
-            //is = new IndexedString(parent, "omg wtf bbq http://wtf.com");
-            //_index.add(is);
-            //_indexEJB.create(is);
          }
       } catch (Exception e) {
          //drop it like it's hot
@@ -54,29 +37,28 @@ public class SearchService {
    public String search(String for_) {
       StringBuilder sb = new StringBuilder();
       sb.append("<ul>");
-      //IndexList res = new IndexList(new CircularShifter());
       java.util.TreeSet<kwic.backend.IndexedString> res = new java.util.TreeSet<kwic.backend.IndexedString>();
       InputReader ir = new InputReader(new BufferedReader(new StringReader(for_)));
       IndexedString temp = ir.next();
       while(temp != null) {
-         System.err.println("searching for " + temp.toString());
+         //System.err.println("searching for " + temp.toString());
          java.util.TreeSet<kwic.backend.IndexedString> results = _index.search(temp.toString());
          for(IndexedString is : results) {
             System.out.println("Search found: " + is.toString());
             res.add(is);
          }
-         System.err.println(" OR ");
+         //System.err.println(" OR ");
          temp = ir.next();
       }
       for(IndexedString is : res) {
          sb.append("<li><a href=\"" + is.getURL() + "\">" + is.toString() + "</a><br/>");
       }
       sb.append("</ul>");
-      sb.append("Index: <br/><br/>");
-      for(IndexedString is : _index) {
-         sb.append("<li><a href=\"" + is.getURL() + "\">" + is.toString() + "</a><br/>");
-      }
-      sb.append("</ul>");
+      //sb.append("Index: <br/><br/>");
+      //for(IndexedString is : _index) {
+      //   sb.append("<li><a href=\"" + is.getURL() + "\">" + is.toString() + "</a><br/>");
+      //}
+      //sb.append("</ul>");
       return sb.toString();
    }
 
@@ -105,6 +87,7 @@ public class SearchService {
       IndexedString temp = cs.next();
       return temp.getURL();
    }
+
    private IndexList _index;
    @EJB
    private static IndexedStringFacadeRemote _indexEJB;
