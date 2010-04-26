@@ -18,5 +18,6 @@
            Results:<br/>
            ${result}
         </div>
+        <a href="search.htm">Back</a>
     </body>
 </html>

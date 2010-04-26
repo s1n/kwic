@@ -15,12 +15,13 @@
       <div id="description">
          Description: ${description}
       </div>
-      <div id="description">
+      <div id="index">
          SHA-1 Index: ${index}
       </div>
       <div id="shifts">
          Circular Shifts:<br/>
          ${shifts}
       </div>
+      <a href="admin.htm">Back</a>
    </body>
 </html>
