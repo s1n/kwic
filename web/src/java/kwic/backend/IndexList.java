@@ -90,7 +90,7 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
          }
 
          //case insensitive substring match
-         if(is.toString().substring(0, sublen).equalsIgnoreCase(i)) {
+         if(is.toString().substring(0, sublen).equals(i)) {
             li.add(is);
          }
       }
