@@ -4,8 +4,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Shifter interface to classes that can reorganize input data for indexing.
@@ -56,6 +54,11 @@ public abstract class Shifter {
       }
       return false;
    }
+
+   public ArrayList<String> getTokens() {
+      return this._tokens;
+   }
+
    protected ArrayList<String> _tokens;
    protected URL _url = null;
 }
