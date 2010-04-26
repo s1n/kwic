@@ -1,5 +1,6 @@
 package kwic.backend;
 
+import java.util.StringTokenizer;
 import java.util.TreeSet;
 
 /**
@@ -18,6 +19,7 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
       this._shift = cs_;
    }
 
+   @Deprecated
    public boolean containsIndex(IndexedString o) {
       for(IndexedString is : this) {
          if(is.getIndex().equalsIgnoreCase(o.getIndex())) {
@@ -27,6 +29,7 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
       return false;
    }
 
+   @Deprecated
    public boolean containsInput(IndexedString o) {
       for(IndexedString is : this) {
          if(is.toString().compareTo(o.toString()) != 0) {
@@ -45,6 +48,7 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
       return null;
    }
 
+   @Deprecated
    public TreeSet<IndexedString> findAnyIndexMatches(String i) {
       TreeSet<IndexedString> li = new TreeSet<IndexedString>();
       for(IndexedString is : this) {
@@ -55,6 +59,7 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
       return li;
    }
 
+   @Deprecated
    public IndexedString findFirstInputMatch(String i) {
       for(IndexedString is : this) {
          if(is.toString().equals(i)) {
@@ -70,9 +75,11 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
       for(IndexedString is : possible) {
          if(is.originIndex() == null) {
             //it's an original input string
+            System.err.println("Origin input string: " + is.toString());
             matches.add(is);
          } else {
             //else it's a shifted input, so let's get the original input
+            System.err.println("Shifted input string: " + is.toString());
             matches.add(findFirstIndexMatch(is.originIndex()));
          }
       }
@@ -82,17 +89,16 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
    public TreeSet<IndexedString> findAnyInputMatches(String i) {
       TreeSet<IndexedString> li = new TreeSet<IndexedString>();
       for(IndexedString is : this) {
-
-         //calculate the max substring length
-         int sublen = i.length();
-         if(is.toString().length() < sublen) {
-            sublen = is.toString().length();
+         if(is.originIndex() == null) {
+            continue;
          }
-
-         System.err.println("Checking if " + is.toString() + " ~~ " + i);
-
-         //case insensitive substring match
-         if(is.toString().substring(0, sublen).equals(i)) {
+         boolean containsalltokens = true;
+         StringTokenizer st = new StringTokenizer(i);
+         while(st.hasMoreTokens()) {
+            String next = st.nextToken();
+            containsalltokens &= is.toString().contains(next);
+         }
+         if(containsalltokens) {
             li.add(is);
          }
       }
@@ -108,7 +114,7 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
 
       IndexedString is;
       while((is = this._shift.next()) != null) {
-         System.err.println("Shift: " + is.toString());
+         //System.err.println("Shift: " + is.toString());
          super.add(is);
       }
       return true;
@@ -116,7 +122,7 @@ public class IndexList extends java.util.TreeSet<kwic.backend.IndexedString> {
 
    @Override
    public boolean remove(Object o) {
-      return super.remove((IndexedString)o);
+      return super.remove((IndexedString) o);
    }
    private Shifter _shift = null;
 }

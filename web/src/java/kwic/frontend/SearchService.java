@@ -1,11 +1,17 @@
 package kwic.frontend;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.lang.String;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import kwic.backend.CircularShifter;
 import kwic.backend.IndexList;
 import kwic.backend.IndexedString;
+import kwic.backend.InputReader;
 
 /**
  *
@@ -15,7 +21,7 @@ public class SearchService {
    public SearchService() {
       _index = new IndexList(new CircularShifter());
       try {
-         _indexEJB = (IndexedStringFacadeRemote)new InitialContext().lookup("web/IndexedString/remote");
+         _indexEJB = (IndexedStringFacadeRemote) new InitialContext().lookup("web/IndexedString/remote");
          List<IndexedString> stuff = _indexEJB.findAll();
          if(stuff.size() > 0) {
             for(IndexedString is : stuff) {
@@ -37,7 +43,7 @@ public class SearchService {
             //_index.add(is);
             //_indexEJB.create(is);
          }
-      } catch(Exception e) {
+      } catch (Exception e) {
          //drop it like it's hot
       }
       for(IndexedString is : _index) {
@@ -48,8 +54,21 @@ public class SearchService {
    public String search(String for_) {
       StringBuilder sb = new StringBuilder();
       sb.append("<ul>");
-      java.util.TreeSet<kwic.backend.IndexedString> results = _index.search(for_);
-      for(IndexedString is : results) {
+      //IndexList res = new IndexList(new CircularShifter());
+      java.util.TreeSet<kwic.backend.IndexedString> res = new java.util.TreeSet<kwic.backend.IndexedString>();
+      InputReader ir = new InputReader(new BufferedReader(new StringReader(for_)));
+      IndexedString temp = ir.next();
+      while(temp != null) {
+         System.err.println("searching for " + temp.toString());
+         java.util.TreeSet<kwic.backend.IndexedString> results = _index.search(temp.toString());
+         for(IndexedString is : results) {
+            System.out.println("Search found: " + is.toString());
+            res.add(is);
+         }
+         System.err.println(" OR ");
+         temp = ir.next();
+      }
+      for(IndexedString is : res) {
          sb.append("<li><a href=\"" + is.getURL() + "\">" + is.toString() + "</a><br/>");
       }
       sb.append("</ul>");
@@ -86,7 +105,6 @@ public class SearchService {
       IndexedString temp = cs.next();
       return temp.getURL();
    }
-
    private IndexList _index;
    @EJB
    private static IndexedStringFacadeRemote _indexEJB;
