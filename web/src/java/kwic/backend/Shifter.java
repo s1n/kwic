@@ -29,7 +29,7 @@ public abstract class Shifter {
 
    public void tokenize(IndexedString input_) {
       try {
-         if(!input_.getURL().isEmpty()) {
+         if(input_.getURL() == null || !input_.getURL().isEmpty()) {
             this._url = new URL(input_.getURL());
          } else {
             this.tokenize(input_.toString());
