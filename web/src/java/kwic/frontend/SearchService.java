@@ -60,12 +60,25 @@ public class SearchService {
       StringBuilder sb = new StringBuilder();
       sb.append("<ul>");
       CircularShifter cs = new CircularShifter();
+      System.err.println(for_.toString());
       cs.generatePermutations(for_);
       IndexedString temp = cs.next();
-      while(!temp.toString().isEmpty()) {
+      while(temp != null && !temp.toString().isEmpty()) {
          sb.append("<li>" + temp.toString() + "</li>");
+         for_.setURL(temp.getURL());
+         temp = cs.next();
       }
+
+      //make sure this new entry goes to the database!
+      this._indexEJB.create(for_);
       return sb.toString();
+   }
+
+   public String getURL(IndexedString for_) {
+      CircularShifter cs = new CircularShifter();
+      cs.generatePermutations(for_);
+      IndexedString temp = cs.next();
+      return temp.getURL();
    }
 
    private IndexList _index;

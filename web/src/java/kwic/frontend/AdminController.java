@@ -16,7 +16,7 @@ public class AdminController extends SimpleFormController {
         //in the Web Application Context
 
         setCommandClass(IndexedString.class);
-        setCommandName("search");
+        setCommandName("admin");
         setSuccessView("added");
         setFormView("admin");
     }
@@ -25,11 +25,10 @@ public class AdminController extends SimpleFormController {
     protected ModelAndView onSubmit(Object command) throws Exception {
         IndexedString idx = (IndexedString) command;
         ModelAndView mv = new ModelAndView(getSuccessView());
-        //mv.addObject("result", getSearchService().search(idx.getInput()));
+        mv.addObject("shifts", getSearchService().generateShifts(idx));
         mv.addObject("description", idx.getInput());
         mv.addObject("index", idx.getIndex());
         mv.addObject("url", idx.getURL());
-        mv.addObject("shifts", getSearchService().generateShifts(idx));
         return mv;
     }
 

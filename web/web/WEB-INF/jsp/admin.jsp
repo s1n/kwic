@@ -13,16 +13,16 @@
    <body>
       <div id="main">
          <div id="label">
-            Add a website to the index:
+            Add a website to the index (format is "description URL") :
          </div>
          <div id="entry">
             <form action="" method="post">
-               <spring:nestedPath path="search">
-                  URL:
+               <spring:nestedPath path="admin">
+                  <!--URL:
                   <spring:bind path="URL">
                      <input type="text" name="${status.expression}" value="${status.value}">
-                  </spring:bind>
-                  Description:
+                  </spring:bind>-->
+                  New Entry:
                   <spring:bind path="input">
                      <input type="text" name="${status.expression}" value="${status.value}">
                   </spring:bind>
