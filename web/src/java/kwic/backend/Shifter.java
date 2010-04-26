@@ -21,7 +21,7 @@ public abstract class Shifter {
    public void tokenize(String input_) {
       try {
          this._tokens = new ArrayList<String>(Arrays.asList(input_.split("\\s+")));
-         if(this._url.toString().isEmpty()) {
+         if(null == this._url || this._url.toString().isEmpty()) {
             this._url = new URL(this._tokens.remove(this._tokens.size() - 1));
          }
       } catch(MalformedURLException ex) {
